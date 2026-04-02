@@ -78,4 +78,5 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
       - name: ⚡ Trigger EasyPanel Deploy
+        working-directory: ${{ github.workspace }}
         run: curl --fail -X GET "${{ secrets.EASYPANEL_WEBHOOK_URL }}"
