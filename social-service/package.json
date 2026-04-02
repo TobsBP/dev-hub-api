@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "tsx watch --env-file=.env src/server.ts",
-		"build": "tsc",
+		"build": "tsc && tsc-alias",
 		"start": "node dist/server.js",
 		"lint": "npx @biomejs/biome check --write"
 	},
@@ -37,6 +37,7 @@
 		"husky": "^9.1.7",
 		"lint-staged": "^16.2.7",
 		"ts-node": "^10.9.2",
+		"tsc-alias": "^1.8.16",
 		"tsx": "^4.21.0"
 	},
 	"lint-staged": {
