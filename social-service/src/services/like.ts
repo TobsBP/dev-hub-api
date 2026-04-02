@@ -12,6 +12,8 @@ export const likeService = {
 	},
 
 	async deleteLike(userId: string, targetType: string, targetId: string) {
-		return withCapture(() => likeRepository.delete(userId, targetType, targetId));
+		return withCapture(() =>
+			likeRepository.delete(userId, targetType, targetId),
+		);
 	},
 };
