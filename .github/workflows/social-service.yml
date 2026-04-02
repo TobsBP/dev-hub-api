@@ -1,0 +1,81 @@
+name: 🚀 social-service
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "social-service/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "social-service/**"
+
+defaults:
+  run:
+    working-directory: social-service
+
+jobs:
+  lint:
+    name: 🔍 Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: social-service/package-lock.json
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🧹 Run Biome
+        run: npx biome ci .
+
+  build:
+    name: 🏗️ Build
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: social-service/package-lock.json
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🔨 Build
+        run: npm run build
+
+  secure:
+    name: 🔒 Security
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: social-service/package-lock.json
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🛡️ Audit dependencies
+        run: npm audit --audit-level=high
+
+  deploy:
+    name: 🚢 Deploy
+    runs-on: ubuntu-latest
+    needs: [build, secure]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: ⚡ Trigger EasyPanel Deploy
+        run: curl --fail -X GET "${{ secrets.EASYPANEL_WEBHOOK_URL }}"
