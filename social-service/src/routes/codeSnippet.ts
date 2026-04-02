@@ -8,7 +8,7 @@ import {
 
 export const codeSnippetRoutes = async (app: FastifyInstance) => {
 	app.get(
-		'/snippets/:postId',
+		'/code-snippets/:postId',
 		{
 			schema: {
 				...getCodeSnippetsSchema,
@@ -21,7 +21,7 @@ export const codeSnippetRoutes = async (app: FastifyInstance) => {
 	);
 
 	app.get(
-		'/snippet/:id',
+		'/code-snippet/:id',
 		{
 			schema: {
 				tags: ['Code Snippets'],
@@ -34,7 +34,7 @@ export const codeSnippetRoutes = async (app: FastifyInstance) => {
 	);
 
 	app.post(
-		'/snippets',
+		'/code-snippets',
 		{
 			schema: {
 				tags: ['Code Snippets'],
@@ -47,7 +47,7 @@ export const codeSnippetRoutes = async (app: FastifyInstance) => {
 	);
 
 	app.patch(
-		'/snippet/:id',
+		'/code-snippet/:id',
 		{
 			schema: {
 				tags: ['Code Snippets'],
@@ -61,7 +61,7 @@ export const codeSnippetRoutes = async (app: FastifyInstance) => {
 	);
 
 	app.delete(
-		'/snippet/:id',
+		'/code-snippet/:id',
 		{
 			schema: {
 				tags: ['Code Snippets'],
