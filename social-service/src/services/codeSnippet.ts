@@ -1,6 +1,6 @@
+import { captureException } from '@/lib/sentry.js';
 import { codeSnippetRepository } from '@/repositories/codeSnippet.js';
 import type { CodeSnippetUpdate, NewCodeSnippet } from '@/types/codeSnippet.js';
-import { captureException } from '@/lib/sentry.js';
 
 export const codeSnippetService = {
 	async getSnippetsByPost(postId: string) {

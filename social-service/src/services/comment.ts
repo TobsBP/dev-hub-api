@@ -1,6 +1,6 @@
+import { captureException } from '@/lib/sentry.js';
 import { commentRepository } from '@/repositories/comment.js';
 import type { CommentUpdate, NewComment } from '@/types/comment.js';
-import { captureException } from '@/lib/sentry.js';
 
 export const commentService = {
 	async getCommentsByPost(postId: string) {

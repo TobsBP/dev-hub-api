@@ -1,6 +1,6 @@
+import { captureException } from '@/lib/sentry.js';
 import { followRepository } from '@/repositories/follow.js';
 import type { NewFollow } from '@/types/follow.js';
-import { captureException } from '@/lib/sentry.js';
 
 export const followService = {
 	async getFollowers(userId: string) {

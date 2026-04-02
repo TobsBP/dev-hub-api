@@ -1,6 +1,6 @@
+import { captureException } from '@/lib/sentry.js';
 import { postRepository } from '@/repositories/post.js';
 import type { NewPost, PostUpdate } from '@/types/post.js';
-import { captureException } from '@/lib/sentry.js';
 
 export const postService = {
 	async getPosts() {

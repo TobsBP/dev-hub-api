@@ -1,6 +1,6 @@
+import { captureException } from '@/lib/sentry.js';
 import { tagRepository } from '@/repositories/tag.js';
 import type { NewTag, PostTag } from '@/types/tag.js';
-import { captureException } from '@/lib/sentry.js';
 
 export const tagService = {
 	async getTags() {

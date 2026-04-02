@@ -1,6 +1,6 @@
+import { captureException } from '@/lib/sentry.js';
 import { userRepository } from '@/repositories/user.js';
 import type { NewUser, UserUpdate } from '@/types/user.js';
-import { captureException } from '@/lib/sentry.js';
 
 export const userService = {
 	async getUsers() {

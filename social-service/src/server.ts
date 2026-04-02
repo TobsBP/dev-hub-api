@@ -2,7 +2,7 @@ import { fastifyCors } from '@fastify/cors';
 import { fastifyJwt } from '@fastify/jwt';
 import { fastifySwagger } from '@fastify/swagger';
 import ScalarApiReference from '@scalar/fastify-api-reference';
-import { fastify, type FastifyError } from 'fastify';
+import { type FastifyError, fastify } from 'fastify';
 import {
 	jsonSchemaTransform,
 	serializerCompiler,

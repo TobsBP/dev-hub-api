@@ -1,7 +1,7 @@
 import type { z } from 'zod';
+import { captureException } from '@/lib/sentry.js';
 import { postSolutionRepository } from '@/repositories/postSolution.js';
 import type { postSolutionSchema } from '@/types/postSolution.js';
-import { captureException } from '@/lib/sentry.js';
 
 type PostSolution = z.infer<typeof postSolutionSchema>;
 

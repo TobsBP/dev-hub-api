@@ -1,6 +1,6 @@
+import { captureException } from '@/lib/sentry.js';
 import { likeRepository } from '@/repositories/like.js';
 import type { NewLike } from '@/types/like.js';
-import { captureException } from '@/lib/sentry.js';
 
 export const likeService = {
 	async getLikesByTarget(targetType: string, targetId: string) {

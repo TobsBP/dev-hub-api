@@ -1,6 +1,6 @@
+import { captureException } from '@/lib/sentry.js';
 import { reputationRepository } from '@/repositories/reputation.js';
 import type { NewReputation } from '@/types/reputation.js';
-import { captureException } from '@/lib/sentry.js';
 
 export const reputationService = {
 	async getReputationByUser(userId: string) {

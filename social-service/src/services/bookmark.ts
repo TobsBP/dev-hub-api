@@ -1,6 +1,6 @@
+import { captureException } from '@/lib/sentry.js';
 import { bookmarkRepository } from '@/repositories/bookmark.js';
 import type { NewBookmark } from '@/types/bookmark.js';
-import { captureException } from '@/lib/sentry.js';
 
 export const bookmarkService = {
 	async getBookmarksByUser(userId: string) {
