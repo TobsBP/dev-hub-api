@@ -5,7 +5,7 @@ import { bookmarkSchema } from '@/types/bookmark.js';
 
 export const bookmarkRoutes = async (app: FastifyInstance) => {
 	app.get(
-		'/users/:userId/bookmarks',
+		'/bookmarks/:userId',
 		{
 			schema: {
 				tags: ['Bookmarks'],

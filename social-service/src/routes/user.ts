@@ -6,7 +6,11 @@ import { getUsersSchema, userSchema } from '@/types/user.js';
 const safeUserSchema = userSchema.omit({ password_hash: true });
 
 export const userRoutes = async (app: FastifyInstance) => {
-	app.get('/users', { schema: { ...getUsersSchema, tags: ['Users'] } }, userController.getAll);
+	app.get(
+		'/users',
+		{ schema: { ...getUsersSchema, tags: ['Users'] } },
+		userController.getAll,
+	);
 
 	app.get(
 		'/user/:id',

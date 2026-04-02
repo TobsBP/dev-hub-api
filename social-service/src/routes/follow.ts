@@ -5,7 +5,7 @@ import { followSchema } from '@/types/follow.js';
 
 export const followRoutes = async (app: FastifyInstance) => {
 	app.get(
-		'/users/:userId/followers',
+		'/followers/:userId',
 		{
 			schema: {
 				tags: ['Follows'],
@@ -18,7 +18,7 @@ export const followRoutes = async (app: FastifyInstance) => {
 	);
 
 	app.get(
-		'/users/:userId/following',
+		'/following/:userId',
 		{
 			schema: {
 				tags: ['Follows'],

@@ -4,7 +4,11 @@ import { postController } from '@/controllers/post.js';
 import { getPostsSchema, postSchema } from '@/types/post.js';
 
 export const postRoutes = async (app: FastifyInstance) => {
-	app.get('/posts', { schema: { ...getPostsSchema, tags: ['Posts'] } }, postController.getAll);
+	app.get(
+		'/posts',
+		{ schema: { ...getPostsSchema, tags: ['Posts'] } },
+		postController.getAll,
+	);
 
 	app.get(
 		'/post/:id',

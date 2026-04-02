@@ -4,7 +4,11 @@ import { tagController } from '@/controllers/tag.js';
 import { getTagsSchema, postTagSchema, tagSchema } from '@/types/tag.js';
 
 export const tagRoutes = async (app: FastifyInstance) => {
-	app.get('/tags', { schema: { ...getTagsSchema, tags: ['Tags'] } }, tagController.getAll);
+	app.get(
+		'/tags',
+		{ schema: { ...getTagsSchema, tags: ['Tags'] } },
+		tagController.getAll,
+	);
 
 	app.get(
 		'/tag/:id',
@@ -20,7 +24,7 @@ export const tagRoutes = async (app: FastifyInstance) => {
 	);
 
 	app.get(
-		'/posts/:postId/tags',
+		'/tags/:postId',
 		{
 			schema: {
 				tags: ['Tags'],
@@ -58,7 +62,7 @@ export const tagRoutes = async (app: FastifyInstance) => {
 	);
 
 	app.post(
-		'/post-tag',
+		'/tag',
 		{
 			schema: {
 				tags: ['Tags'],
@@ -70,7 +74,7 @@ export const tagRoutes = async (app: FastifyInstance) => {
 	);
 
 	app.delete(
-		'/post-tag/:postId/:tagId',
+		'/tag/:postId/:tagId',
 		{
 			schema: {
 				tags: ['Tags'],

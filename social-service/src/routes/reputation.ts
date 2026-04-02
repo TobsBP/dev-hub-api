@@ -5,7 +5,7 @@ import { getReputationSchema, reputationSchema } from '@/types/reputation.js';
 
 export const reputationRoutes = async (app: FastifyInstance) => {
 	app.get(
-		'/users/:userId/reputations',
+		'/reputations/:userId',
 		{
 			schema: {
 				...getReputationSchema,
@@ -18,7 +18,7 @@ export const reputationRoutes = async (app: FastifyInstance) => {
 	);
 
 	app.post(
-		'/reputations',
+		'/reputation',
 		{
 			schema: {
 				tags: ['Reputation'],
