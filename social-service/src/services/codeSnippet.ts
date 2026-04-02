@@ -1,5 +1,6 @@
 import { codeSnippetRepository } from '@/repositories/codeSnippet.js';
 import type { CodeSnippetUpdate, NewCodeSnippet } from '@/types/codeSnippet.js';
+import { captureException } from '@/lib/sentry.js';
 
 export const codeSnippetService = {
 	async getSnippetsByPost(postId: string) {
@@ -7,6 +8,7 @@ export const codeSnippetService = {
 			const data = await codeSnippetRepository.findByPostId(postId);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -16,6 +18,7 @@ export const codeSnippetService = {
 			const data = await codeSnippetRepository.findById(id);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -25,6 +28,7 @@ export const codeSnippetService = {
 			const data = await codeSnippetRepository.create(payload);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -34,6 +38,7 @@ export const codeSnippetService = {
 			const data = await codeSnippetRepository.update(id, payload);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -43,6 +48,7 @@ export const codeSnippetService = {
 			await codeSnippetRepository.delete(id);
 			return { error: null };
 		} catch (error) {
+			captureException(error);
 			return { error };
 		}
 	},

@@ -2,7 +2,7 @@ import { fastifyCors } from '@fastify/cors';
 import { fastifyJwt } from '@fastify/jwt';
 import { fastifySwagger } from '@fastify/swagger';
 import ScalarApiReference from '@scalar/fastify-api-reference';
-import { fastify } from 'fastify';
+import { fastify, type FastifyError } from 'fastify';
 import {
 	jsonSchemaTransform,
 	serializerCompiler,
@@ -10,7 +10,10 @@ import {
 	type ZodTypeProvider,
 } from 'fastify-type-provider-zod';
 
+import { captureException, initSentry } from './lib/sentry.js';
 import { routes } from './router.js';
+
+initSentry();
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 app.setValidatorCompiler(validatorCompiler);
@@ -54,6 +57,11 @@ app.register(ScalarApiReference, {
 });
 
 app.register(routes);
+
+app.setErrorHandler((error: FastifyError, _request, reply) => {
+	captureException(error);
+	reply.status(error.statusCode ?? 500).send({ error: error.message });
+});
 
 app.listen({ port: 3333, host: '0.0.0.0' }).then(() => {
 	console.log('HTTP server running on http://localhost:3333!');

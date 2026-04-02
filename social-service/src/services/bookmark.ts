@@ -1,5 +1,6 @@
 import { bookmarkRepository } from '@/repositories/bookmark.js';
 import type { NewBookmark } from '@/types/bookmark.js';
+import { captureException } from '@/lib/sentry.js';
 
 export const bookmarkService = {
 	async getBookmarksByUser(userId: string) {
@@ -7,6 +8,7 @@ export const bookmarkService = {
 			const data = await bookmarkRepository.findByUserId(userId);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -16,6 +18,7 @@ export const bookmarkService = {
 			const data = await bookmarkRepository.create(payload);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -25,6 +28,7 @@ export const bookmarkService = {
 			await bookmarkRepository.delete(userId, postId);
 			return { error: null };
 		} catch (error) {
+			captureException(error);
 			return { error };
 		}
 	},

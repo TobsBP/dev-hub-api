@@ -1,5 +1,6 @@
 import { likeRepository } from '@/repositories/like.js';
 import type { NewLike } from '@/types/like.js';
+import { captureException } from '@/lib/sentry.js';
 
 export const likeService = {
 	async getLikesByTarget(targetType: string, targetId: string) {
@@ -7,6 +8,7 @@ export const likeService = {
 			const data = await likeRepository.findByTarget(targetType, targetId);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -16,6 +18,7 @@ export const likeService = {
 			const data = await likeRepository.create(payload);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -25,6 +28,7 @@ export const likeService = {
 			await likeRepository.delete(userId, targetType, targetId);
 			return { error: null };
 		} catch (error) {
+			captureException(error);
 			return { error };
 		}
 	},

@@ -1,5 +1,6 @@
 import { commentRepository } from '@/repositories/comment.js';
 import type { CommentUpdate, NewComment } from '@/types/comment.js';
+import { captureException } from '@/lib/sentry.js';
 
 export const commentService = {
 	async getCommentsByPost(postId: string) {
@@ -7,6 +8,7 @@ export const commentService = {
 			const data = await commentRepository.findByPostId(postId);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -16,6 +18,7 @@ export const commentService = {
 			const data = await commentRepository.findById(id);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -25,6 +28,7 @@ export const commentService = {
 			const data = await commentRepository.create(payload);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -34,6 +38,7 @@ export const commentService = {
 			const data = await commentRepository.update(id, payload);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -43,6 +48,7 @@ export const commentService = {
 			await commentRepository.delete(id);
 			return { error: null };
 		} catch (error) {
+			captureException(error);
 			return { error };
 		}
 	},

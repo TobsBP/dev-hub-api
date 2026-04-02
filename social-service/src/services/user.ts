@@ -1,5 +1,6 @@
 import { userRepository } from '@/repositories/user.js';
 import type { NewUser, UserUpdate } from '@/types/user.js';
+import { captureException } from '@/lib/sentry.js';
 
 export const userService = {
 	async getUsers() {
@@ -7,6 +8,7 @@ export const userService = {
 			const data = await userRepository.findAll();
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -16,6 +18,7 @@ export const userService = {
 			const data = await userRepository.findById(id);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -25,6 +28,7 @@ export const userService = {
 			const data = await userRepository.create(payload);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -34,6 +38,7 @@ export const userService = {
 			const data = await userRepository.update(id, payload);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -43,6 +48,7 @@ export const userService = {
 			await userRepository.delete(id);
 			return { error: null };
 		} catch (error) {
+			captureException(error);
 			return { error };
 		}
 	},

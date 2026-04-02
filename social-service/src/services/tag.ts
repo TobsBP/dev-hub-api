@@ -1,5 +1,6 @@
 import { tagRepository } from '@/repositories/tag.js';
 import type { NewTag, PostTag } from '@/types/tag.js';
+import { captureException } from '@/lib/sentry.js';
 
 export const tagService = {
 	async getTags() {
@@ -7,6 +8,7 @@ export const tagService = {
 			const data = await tagRepository.findAll();
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -16,6 +18,7 @@ export const tagService = {
 			const data = await tagRepository.findById(id);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -25,6 +28,7 @@ export const tagService = {
 			const data = await tagRepository.findByPostId(postId);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -34,6 +38,7 @@ export const tagService = {
 			const data = await tagRepository.create(payload);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -43,6 +48,7 @@ export const tagService = {
 			await tagRepository.delete(id);
 			return { error: null };
 		} catch (error) {
+			captureException(error);
 			return { error };
 		}
 	},
@@ -52,6 +58,7 @@ export const tagService = {
 			await tagRepository.addToPost(payload);
 			return { error: null };
 		} catch (error) {
+			captureException(error);
 			return { error };
 		}
 	},
@@ -61,6 +68,7 @@ export const tagService = {
 			await tagRepository.removeFromPost(postId, tagId);
 			return { error: null };
 		} catch (error) {
+			captureException(error);
 			return { error };
 		}
 	},

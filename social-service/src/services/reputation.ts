@@ -1,5 +1,6 @@
 import { reputationRepository } from '@/repositories/reputation.js';
 import type { NewReputation } from '@/types/reputation.js';
+import { captureException } from '@/lib/sentry.js';
 
 export const reputationService = {
 	async getReputationByUser(userId: string) {
@@ -7,6 +8,7 @@ export const reputationService = {
 			const data = await reputationRepository.findByUserId(userId);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -16,6 +18,7 @@ export const reputationService = {
 			const data = await reputationRepository.create(payload);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},

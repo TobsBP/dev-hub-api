@@ -1,5 +1,6 @@
 import { postRepository } from '@/repositories/post.js';
 import type { NewPost, PostUpdate } from '@/types/post.js';
+import { captureException } from '@/lib/sentry.js';
 
 export const postService = {
 	async getPosts() {
@@ -7,6 +8,7 @@ export const postService = {
 			const data = await postRepository.findAll();
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -16,6 +18,7 @@ export const postService = {
 			const data = await postRepository.findById(id);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -25,6 +28,7 @@ export const postService = {
 			const data = await postRepository.findByUserId(userId);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -34,6 +38,7 @@ export const postService = {
 			const data = await postRepository.create(payload);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -43,6 +48,7 @@ export const postService = {
 			const data = await postRepository.update(id, payload);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -52,6 +58,7 @@ export const postService = {
 			await postRepository.delete(id);
 			return { error: null };
 		} catch (error) {
+			captureException(error);
 			return { error };
 		}
 	},

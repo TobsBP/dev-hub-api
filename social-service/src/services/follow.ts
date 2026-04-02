@@ -1,5 +1,6 @@
 import { followRepository } from '@/repositories/follow.js';
 import type { NewFollow } from '@/types/follow.js';
+import { captureException } from '@/lib/sentry.js';
 
 export const followService = {
 	async getFollowers(userId: string) {
@@ -7,6 +8,7 @@ export const followService = {
 			const data = await followRepository.findFollowers(userId);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -16,6 +18,7 @@ export const followService = {
 			const data = await followRepository.findFollowing(userId);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -25,6 +28,7 @@ export const followService = {
 			const data = await followRepository.create(payload);
 			return { data, error: null };
 		} catch (error) {
+			captureException(error);
 			return { data: null, error };
 		}
 	},
@@ -34,6 +38,7 @@ export const followService = {
 			await followRepository.delete(followerId, followingId);
 			return { error: null };
 		} catch (error) {
+			captureException(error);
 			return { error };
 		}
 	},
