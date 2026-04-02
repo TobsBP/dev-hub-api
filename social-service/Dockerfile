@@ -30,7 +30,7 @@ RUN npm i
 # Copy the entire dist folder from build stage
 COPY --from=build /usr/src/app/dist ./dist
 
-EXPOSE 4000
+EXPOSE 3333
 
 # Use node directly instead of npm start (more reliable)
 CMD ["npm", "start"]
