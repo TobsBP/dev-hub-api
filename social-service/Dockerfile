@@ -4,13 +4,13 @@ FROM node:20-alpine AS build
 WORKDIR /usr/src/app
 
 # Copy package files
-COPY package.json package-lock.json ./
+COPY social-service/package.json social-service/package-lock.json ./
 
 # Install ALL dependencies (including dev dependencies for build)
 RUN npm i
 
 # Copy source code and config files
-COPY . .
+COPY social-service/ .
 
 # Build the application
 RUN npm run build
@@ -22,7 +22,7 @@ ENV NODE_ENV=production
 WORKDIR /usr/src/app
 
 # Copy package files
-COPY package.json package-lock.json ./
+COPY social-service/package.json social-service/package-lock.json ./
 
 # Install ONLY production dependencies
 RUN npm i
