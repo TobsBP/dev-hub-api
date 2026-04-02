@@ -1,0 +1,25 @@
+import type { FastifyReply, FastifyRequest } from 'fastify';
+import { reputationService } from '@/services/reputation.js';
+import type { NewReputation } from '@/types/reputation.js';
+
+export const reputationController = {
+	async getByUser(
+		request: FastifyRequest<{ Params: { userId: string } }>,
+		reply: FastifyReply,
+	) {
+		const { data, error } = await reputationService.getReputationByUser(
+			request.params.userId,
+		);
+		if (error) return reply.status(500).send({ error });
+		return reply.status(200).send(data);
+	},
+
+	async add(
+		request: FastifyRequest<{ Body: NewReputation }>,
+		reply: FastifyReply,
+	) {
+		const { data, error } = await reputationService.addReputation(request.body);
+		if (error) return reply.status(500).send({ error });
+		return reply.status(201).send(data);
+	},
+};
