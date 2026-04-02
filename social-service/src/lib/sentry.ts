@@ -12,3 +12,15 @@ export function initSentry() {
 export function captureException(error: unknown) {
 	Sentry.captureException(error);
 }
+
+export async function withCapture<T>(
+	fn: () => Promise<T>,
+): Promise<{ data: T | null; error: unknown }> {
+	try {
+		const data = await fn();
+		return { data, error: null };
+	} catch (error) {
+		captureException(error);
+		return { data: null, error };
+	}
+}

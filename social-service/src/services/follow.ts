@@ -1,45 +1,21 @@
-import { captureException } from '@/lib/sentry.js';
+import { withCapture } from '@/lib/sentry.js';
 import { followRepository } from '@/repositories/follow.js';
 import type { NewFollow } from '@/types/follow.js';
 
 export const followService = {
 	async getFollowers(userId: string) {
-		try {
-			const data = await followRepository.findFollowers(userId);
-			return { data, error: null };
-		} catch (error) {
-			captureException(error);
-			return { data: null, error };
-		}
+		return withCapture(() => followRepository.findFollowers(userId));
 	},
 
 	async getFollowing(userId: string) {
-		try {
-			const data = await followRepository.findFollowing(userId);
-			return { data, error: null };
-		} catch (error) {
-			captureException(error);
-			return { data: null, error };
-		}
+		return withCapture(() => followRepository.findFollowing(userId));
 	},
 
 	async follow(payload: NewFollow) {
-		try {
-			const data = await followRepository.create(payload);
-			return { data, error: null };
-		} catch (error) {
-			captureException(error);
-			return { data: null, error };
-		}
+		return withCapture(() => followRepository.create(payload));
 	},
 
 	async unfollow(followerId: string, followingId: string) {
-		try {
-			await followRepository.delete(followerId, followingId);
-			return { error: null };
-		} catch (error) {
-			captureException(error);
-			return { error };
-		}
+		return withCapture(() => followRepository.delete(followerId, followingId));
 	},
 };

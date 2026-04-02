@@ -1,75 +1,33 @@
-import { captureException } from '@/lib/sentry.js';
+import { withCapture } from '@/lib/sentry.js';
 import { tagRepository } from '@/repositories/tag.js';
 import type { NewTag, PostTag } from '@/types/tag.js';
 
 export const tagService = {
 	async getTags() {
-		try {
-			const data = await tagRepository.findAll();
-			return { data, error: null };
-		} catch (error) {
-			captureException(error);
-			return { data: null, error };
-		}
+		return withCapture(() => tagRepository.findAll());
 	},
 
 	async getTagById(id: string) {
-		try {
-			const data = await tagRepository.findById(id);
-			return { data, error: null };
-		} catch (error) {
-			captureException(error);
-			return { data: null, error };
-		}
+		return withCapture(() => tagRepository.findById(id));
 	},
 
 	async getTagsByPost(postId: string) {
-		try {
-			const data = await tagRepository.findByPostId(postId);
-			return { data, error: null };
-		} catch (error) {
-			captureException(error);
-			return { data: null, error };
-		}
+		return withCapture(() => tagRepository.findByPostId(postId));
 	},
 
 	async createTag(payload: NewTag) {
-		try {
-			const data = await tagRepository.create(payload);
-			return { data, error: null };
-		} catch (error) {
-			captureException(error);
-			return { data: null, error };
-		}
+		return withCapture(() => tagRepository.create(payload));
 	},
 
 	async deleteTag(id: string) {
-		try {
-			await tagRepository.delete(id);
-			return { error: null };
-		} catch (error) {
-			captureException(error);
-			return { error };
-		}
+		return withCapture(() => tagRepository.delete(id));
 	},
 
 	async addTagToPost(payload: PostTag) {
-		try {
-			await tagRepository.addToPost(payload);
-			return { error: null };
-		} catch (error) {
-			captureException(error);
-			return { error };
-		}
+		return withCapture(() => tagRepository.addToPost(payload));
 	},
 
 	async removeTagFromPost(postId: string, tagId: string) {
-		try {
-			await tagRepository.removeFromPost(postId, tagId);
-			return { error: null };
-		} catch (error) {
-			captureException(error);
-			return { error };
-		}
+		return withCapture(() => tagRepository.removeFromPost(postId, tagId));
 	},
 };

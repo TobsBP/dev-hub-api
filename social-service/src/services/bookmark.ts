@@ -1,35 +1,17 @@
-import { captureException } from '@/lib/sentry.js';
+import { withCapture } from '@/lib/sentry.js';
 import { bookmarkRepository } from '@/repositories/bookmark.js';
 import type { NewBookmark } from '@/types/bookmark.js';
 
 export const bookmarkService = {
 	async getBookmarksByUser(userId: string) {
-		try {
-			const data = await bookmarkRepository.findByUserId(userId);
-			return { data, error: null };
-		} catch (error) {
-			captureException(error);
-			return { data: null, error };
-		}
+		return withCapture(() => bookmarkRepository.findByUserId(userId));
 	},
 
 	async createBookmark(payload: NewBookmark) {
-		try {
-			const data = await bookmarkRepository.create(payload);
-			return { data, error: null };
-		} catch (error) {
-			captureException(error);
-			return { data: null, error };
-		}
+		return withCapture(() => bookmarkRepository.create(payload));
 	},
 
 	async deleteBookmark(userId: string, postId: string) {
-		try {
-			await bookmarkRepository.delete(userId, postId);
-			return { error: null };
-		} catch (error) {
-			captureException(error);
-			return { error };
-		}
+		return withCapture(() => bookmarkRepository.delete(userId, postId));
 	},
 };
