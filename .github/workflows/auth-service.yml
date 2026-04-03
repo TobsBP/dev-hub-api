@@ -42,4 +42,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: application-jar
-          path: auth-service/target/*.jar  # ✅ caminho absoluto (upload-artifact ignora working-directory)
+          path: auth-service/target/*.jar
