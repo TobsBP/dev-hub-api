@@ -1,0 +1,12 @@
+package com.dev_hub_api.restapi.application.dto;
+
+import java.util.UUID;
+
+public record UserUpdateDTO(UUID id,
+                            String email,
+                            String name,
+                            String password,
+                            String bio,
+                            String avatarUrl
+                            ) {
+}
