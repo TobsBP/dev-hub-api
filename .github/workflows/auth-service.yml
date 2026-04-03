@@ -31,6 +31,7 @@ jobs:
           distribution: temurin
           java-version: 21
           cache: maven
+          cache-dependency-path: auth-service/pom.xml
 
       - name: Give permission to mvnw
         run: chmod +x mvnw
