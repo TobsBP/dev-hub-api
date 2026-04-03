@@ -12,10 +12,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: auth-service
-
     env:
       SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
       SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
@@ -34,10 +30,11 @@ jobs:
           cache-dependency-path: auth-service/pom.xml
 
       - name: Give permission to mvnw
-        run: chmod +x mvnw
+        run: chmod +x ${{ github.workspace }}/auth-service/mvnw 
 
       - name: Build and Test
-        run: ./mvnw clean verify
+        run: ${{ github.workspace }}/auth-service/mvnw clean verify 
+        working-directory: ${{ github.workspace }}/auth-service
 
       - name: Upload JAR
         uses: actions/upload-artifact@v4
