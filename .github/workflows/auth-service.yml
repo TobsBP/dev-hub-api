@@ -11,6 +11,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     defaults:
       run:
         working-directory: auth-service
@@ -21,7 +22,6 @@ jobs:
       SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
 
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -36,10 +36,10 @@ jobs:
         run: chmod +x mvnw
 
       - name: Build and Test
-        run: ./mvnw clean install -DskipTests
+        run: ./mvnw clean verify
 
       - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:
           name: application-jar
-          path: auth-service/target/*.jar
+          path: auth-service/target/*.jar  # ✅ caminho absoluto (upload-artifact ignora working-directory)
