@@ -20,7 +20,7 @@ export const getUsersSchema = {
 
 export type User = z.infer<typeof userSchema>;
 export type NewUser = Omit<User, 'id' | 'created_at'>;
-export type NewUserInput = Omit<NewUser, 'password_hash' | 'avatar_url'> & {
+export type NewUserInput = Omit<NewUser, 'password_hash' | 'avatar_url' | 'role'> & {
 	password: string;
 	avatarStream?: import('node:stream').Readable;
 };
