@@ -1,5 +1,5 @@
 import { db } from '@/lib/db.js';
-import type { NewUser, User, UserUpdate } from '@/types/user.js';
+import type { NewUser, User, UserUpdateRecord } from '@/types/user.js';
 
 export const userRepository = {
 	async findAll(): Promise<User[]> {
@@ -24,7 +24,7 @@ export const userRepository = {
 		return user;
 	},
 
-	async update(id: string, data: UserUpdate): Promise<User | null> {
+	async update(id: string, data: UserUpdateRecord): Promise<User | null> {
 		const [user] = await db<User[]>`
       UPDATE users SET ${db(data)}
       WHERE id = ${id}

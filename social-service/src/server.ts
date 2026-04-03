@@ -1,5 +1,6 @@
 import { fastifyCors } from '@fastify/cors';
 import { fastifyJwt } from '@fastify/jwt';
+import fastifyMultipart from '@fastify/multipart';
 import { fastifySwagger } from '@fastify/swagger';
 import ScalarApiReference from '@scalar/fastify-api-reference';
 import { type FastifyError, fastify } from 'fastify';
@@ -18,6 +19,8 @@ initSentry();
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
+
+app.register(fastifyMultipart);
 
 app.register(fastifyCors, {
 	origin: true,

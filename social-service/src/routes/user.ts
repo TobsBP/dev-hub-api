@@ -26,12 +26,13 @@ export const userRoutes = async (app: FastifyInstance) => {
 	);
 
 	app.post(
-		'/users',
+		'/user',
 		{
 			schema: {
 				tags: ['Users'],
-				description: 'Create a user',
-				body: userSchema.omit({ id: true, created_at: true }),
+				description:
+					'Create a user\n\n**Fields (multipart/form-data):**\n- `username` (string, max 50) — required\n- `email` (string, max 100) — required\n- `password` (string) — required\n- `bio` (string) — optional\n- `avatar` (file) — optional',
+				consumes: ['multipart/form-data'],
 				response: { 201: safeUserSchema },
 			},
 		},
@@ -43,11 +44,10 @@ export const userRoutes = async (app: FastifyInstance) => {
 		{
 			schema: {
 				tags: ['Users'],
-				description: 'Update a user',
+				description:
+					'Update a user\n\n**Fields (multipart/form-data):**\n- `username` (string, max 50) — optional\n- `email` (string, max 100) — optional\n- `bio` (string) — optional\n- `avatar` (file) — optional',
+				consumes: ['multipart/form-data'],
 				params: z.object({ id: z.uuid() }),
-				body: userSchema
-					.omit({ id: true, created_at: true, password_hash: true })
-					.partial(),
 				response: { 200: safeUserSchema },
 			},
 		},

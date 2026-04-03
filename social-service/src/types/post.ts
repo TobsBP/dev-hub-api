@@ -6,7 +6,7 @@ export const postSchema = z.object({
 	content: z.string().min(5),
 	type: z.string(),
 	created_at: z.string(),
-	updated_at: z.string(),
+	updated_at: z.string().nullable(),
 });
 
 export const getPostsSchema = {
