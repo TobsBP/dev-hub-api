@@ -30,15 +30,9 @@ export const userRoutes = async (app: FastifyInstance) => {
 		{
 			schema: {
 				tags: ['Users'],
-				description: 'Create a user',
+				description:
+					'Create a user\n\n**Fields (multipart/form-data):**\n- `username` (string, max 50) — required\n- `email` (string, max 100) — required\n- `password` (string) — required\n- `bio` (string) — optional\n- `avatar` (file) — optional',
 				consumes: ['multipart/form-data'],
-				body: z.object({
-					username: z.string().max(50),
-					email: z.string().max(100),
-					password: z.string(),
-					bio: z.string().optional(),
-					avatar: z.any().optional().describe('Avatar image file (binary)'),
-				}),
 				response: { 201: safeUserSchema },
 			},
 		},
@@ -50,15 +44,10 @@ export const userRoutes = async (app: FastifyInstance) => {
 		{
 			schema: {
 				tags: ['Users'],
-				description: 'Update a user',
+				description:
+					'Update a user\n\n**Fields (multipart/form-data):**\n- `username` (string, max 50) — optional\n- `email` (string, max 100) — optional\n- `bio` (string) — optional\n- `avatar` (file) — optional',
 				consumes: ['multipart/form-data'],
 				params: z.object({ id: z.uuid() }),
-				body: z.object({
-					username: z.string().max(50).optional(),
-					email: z.string().max(100).optional(),
-					bio: z.string().optional(),
-					avatar: z.any().optional().describe('Avatar image file (binary)'),
-				}),
 				response: { 200: safeUserSchema },
 			},
 		},
