@@ -19,4 +19,13 @@ export const getUsersSchema = {
 
 export type User = z.infer<typeof userSchema>;
 export type NewUser = Omit<User, 'id' | 'created_at'>;
-export type UserUpdate = Partial<Omit<NewUser, 'password_hash'>>;
+export type NewUserInput = Omit<NewUser, 'password_hash' | 'avatar_url'> & {
+	password: string;
+	avatarStream?: import('node:stream').Readable;
+};
+export type UserUpdate = Partial<
+	Omit<NewUser, 'password_hash' | 'avatar_url'>
+> & {
+	avatarStream?: import('node:stream').Readable;
+};
+export type UserUpdateRecord = Partial<Omit<User, 'id' | 'created_at'>>;

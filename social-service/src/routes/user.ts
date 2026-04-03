@@ -31,7 +31,14 @@ export const userRoutes = async (app: FastifyInstance) => {
 			schema: {
 				tags: ['Users'],
 				description: 'Create a user',
-				body: userSchema.omit({ id: true, created_at: true }),
+				consumes: ['multipart/form-data'],
+				body: z.object({
+					username: z.string().max(50),
+					email: z.string().max(100),
+					password: z.string(),
+					bio: z.string().optional(),
+					avatar: z.any().optional().describe('Avatar image file (binary)'),
+				}),
 				response: { 201: safeUserSchema },
 			},
 		},
@@ -44,10 +51,14 @@ export const userRoutes = async (app: FastifyInstance) => {
 			schema: {
 				tags: ['Users'],
 				description: 'Update a user',
+				consumes: ['multipart/form-data'],
 				params: z.object({ id: z.uuid() }),
-				body: userSchema
-					.omit({ id: true, created_at: true, password_hash: true })
-					.partial(),
+				body: z.object({
+					username: z.string().max(50).optional(),
+					email: z.string().max(100).optional(),
+					bio: z.string().optional(),
+					avatar: z.any().optional().describe('Avatar image file (binary)'),
+				}),
 				response: { 200: safeUserSchema },
 			},
 		},
