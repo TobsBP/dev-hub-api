@@ -26,7 +26,7 @@ export const userRoutes = async (app: FastifyInstance) => {
 	);
 
 	app.post(
-		'/users',
+		'/user',
 		{
 			schema: {
 				tags: ['Users'],
