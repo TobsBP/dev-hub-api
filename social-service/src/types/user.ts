@@ -5,9 +5,10 @@ export const userSchema = z.object({
 	username: z.string().max(50),
 	email: z.email().max(100),
 	password_hash: z.string(),
-	bio: z.string().nullable(),
+  bio: z.string().nullable(),
+	role: z.string().nullable(),
 	avatar_url: z.string().nullable(),
-	created_at: z.string(),
+  created_at: z.string(),
 });
 
 export const getUsersSchema = {
