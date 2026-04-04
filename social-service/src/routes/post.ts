@@ -37,7 +37,7 @@ export const postRoutes = async (app: FastifyInstance) => {
 	);
 
 	app.post(
-		'/posts',
+		'/post',
 		{
 			schema: {
 				tags: ['Posts'],

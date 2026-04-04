@@ -33,7 +33,7 @@ export const userRoutes = async (app: FastifyInstance) => {
 				description:
 					'Create a user\n\n**Fields (multipart/form-data):**\n- `username` (string, max 50) — required\n- `email` (string, max 100) — required\n- `password` (string) — required\n- `bio` (string) — optional\n- `avatar` (file) — optional',
 				consumes: ['multipart/form-data'],
-				response: { 201: safeUserSchema },
+				response: { 201: z.object({ message: z.string() }) },
 			},
 		},
 		userController.create,

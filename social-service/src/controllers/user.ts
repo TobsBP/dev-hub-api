@@ -32,7 +32,7 @@ export const userController = {
 			}
 		}
 
-		const { data, error } = await userService.createUser({
+		const { error } = await userService.createUser({
 			username: fields.username,
 			email: fields.email,
 			password: fields.password,
@@ -40,7 +40,7 @@ export const userController = {
 			avatarStream,
 		});
 		if (error) return reply.status(500).send({ error });
-		return reply.status(201).send(data);
+		return reply.status(201).send({ message: 'User created' });
 	},
 
 	async update(

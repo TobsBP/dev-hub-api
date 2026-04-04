@@ -20,7 +20,12 @@ export const userService = {
 			: null;
 		const { password: _p, avatarStream: _s, ...rest } = payload;
 		return withCapture(() =>
-			userRepository.create({ ...rest, password_hash, avatar_url, role: 'CLIENT' }),
+			userRepository.create({
+				...rest,
+				password_hash,
+				avatar_url,
+				role: 'CLIENT',
+			}),
 		);
 	},
 

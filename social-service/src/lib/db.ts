@@ -6,6 +6,11 @@ if (!process.env.DB_URL) {
 
 export const db = postgres(process.env.DB_URL, {
 	types: {
-		timestamp: { to: 1114, from: [1114, 1184], parse: (v: string) => v, serialize: (v: string) => v },
+		timestamp: {
+			to: 1114,
+			from: [1114, 1184],
+			parse: (v: string) => v,
+			serialize: (v: string) => v,
+		},
 	},
 });
