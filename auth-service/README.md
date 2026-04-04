@@ -39,6 +39,7 @@ http://localhost:9090
 
 ## Rotas
 
+
 ### Users
 
 | Método | Rota | Descrição | Auth |
