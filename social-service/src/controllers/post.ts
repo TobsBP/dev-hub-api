@@ -34,9 +34,9 @@ export const postController = {
 		request: FastifyRequest<{ Body: NewPost }>,
 		reply: FastifyReply,
 	) {
-		const { data, error } = await postService.createPost(request.body);
+		const { error } = await postService.createPost(request.body);
 		if (error) return reply.status(500).send({ error });
-		return reply.status(201).send(data);
+		return reply.status(201).send({ message: 'Post created' });
 	},
 
 	async update(
@@ -49,7 +49,7 @@ export const postController = {
 		);
 		if (error) return reply.status(500).send({ error });
 		if (!data) return reply.status(404).send({ error: 'Post not found' });
-		return reply.status(200).send(data);
+		return reply.status(200).send({ message: 'Post updated' });
 	},
 
 	async delete(

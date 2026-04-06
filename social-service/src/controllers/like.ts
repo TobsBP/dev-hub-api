@@ -22,9 +22,9 @@ export const likeController = {
 		request: FastifyRequest<{ Body: NewLike }>,
 		reply: FastifyReply,
 	) {
-		const { data, error } = await likeService.createLike(request.body);
+		const { error } = await likeService.createLike(request.body);
 		if (error) return reply.status(500).send({ error });
-		return reply.status(201).send(data);
+		return reply.status(201).send({ message: 'Like created' });
 	},
 
 	async delete(

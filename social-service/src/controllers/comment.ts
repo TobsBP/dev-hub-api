@@ -30,9 +30,9 @@ export const commentController = {
 		request: FastifyRequest<{ Body: NewComment }>,
 		reply: FastifyReply,
 	) {
-		const { data, error } = await commentService.createComment(request.body);
+		const { error } = await commentService.createComment(request.body);
 		if (error) return reply.status(500).send({ error });
-		return reply.status(201).send(data);
+		return reply.status(201).send({ message: 'Comment created' });
 	},
 
 	async update(
@@ -45,7 +45,7 @@ export const commentController = {
 		);
 		if (error) return reply.status(500).send({ error });
 		if (!data) return reply.status(404).send({ error: 'Comment not found' });
-		return reply.status(200).send(data);
+		return reply.status(200).send({ message: 'Comment updated' });
 	},
 
 	async delete(

@@ -18,9 +18,9 @@ export const bookmarkController = {
 		request: FastifyRequest<{ Body: NewBookmark }>,
 		reply: FastifyReply,
 	) {
-		const { data, error } = await bookmarkService.createBookmark(request.body);
+		const { error } = await bookmarkService.createBookmark(request.body);
 		if (error) return reply.status(500).send({ error });
-		return reply.status(201).send(data);
+		return reply.status(201).send({ message: 'Bookmark created' });
 	},
 
 	async delete(

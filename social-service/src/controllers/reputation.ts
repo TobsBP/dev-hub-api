@@ -18,8 +18,8 @@ export const reputationController = {
 		request: FastifyRequest<{ Body: NewReputation }>,
 		reply: FastifyReply,
 	) {
-		const { data, error } = await reputationService.addReputation(request.body);
+		const { error } = await reputationService.addReputation(request.body);
 		if (error) return reply.status(500).send({ error });
-		return reply.status(201).send(data);
+		return reply.status(201).send({ message: 'Reputation added' });
 	},
 };

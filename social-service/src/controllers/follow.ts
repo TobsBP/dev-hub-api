@@ -29,9 +29,9 @@ export const followController = {
 		request: FastifyRequest<{ Body: NewFollow }>,
 		reply: FastifyReply,
 	) {
-		const { data, error } = await followService.follow(request.body);
+		const { error } = await followService.follow(request.body);
 		if (error) return reply.status(500).send({ error });
-		return reply.status(201).send(data);
+		return reply.status(201).send({ message: 'Followed successfully' });
 	},
 
 	async unfollow(

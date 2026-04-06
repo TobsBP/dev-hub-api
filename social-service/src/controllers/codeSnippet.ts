@@ -31,11 +31,9 @@ export const codeSnippetController = {
 		request: FastifyRequest<{ Body: NewCodeSnippet }>,
 		reply: FastifyReply,
 	) {
-		const { data, error } = await codeSnippetService.createSnippet(
-			request.body,
-		);
+		const { error } = await codeSnippetService.createSnippet(request.body);
 		if (error) return reply.status(500).send({ error });
-		return reply.status(201).send(data);
+		return reply.status(201).send({ message: 'Code snippet created' });
 	},
 
 	async update(
@@ -52,7 +50,7 @@ export const codeSnippetController = {
 		if (error) return reply.status(500).send({ error });
 		if (!data)
 			return reply.status(404).send({ error: 'Code snippet not found' });
-		return reply.status(200).send(data);
+		return reply.status(200).send({ message: 'Code snippet updated' });
 	},
 
 	async delete(

@@ -23,9 +23,9 @@ export const postSolutionController = {
 		request: FastifyRequest<{ Body: PostSolution }>,
 		reply: FastifyReply,
 	) {
-		const { data, error } = await postSolutionService.setSolution(request.body);
+		const { error } = await postSolutionService.setSolution(request.body);
 		if (error) return reply.status(500).send({ error });
-		return reply.status(200).send(data);
+		return reply.status(200).send({ message: 'Solution set' });
 	},
 
 	async remove(

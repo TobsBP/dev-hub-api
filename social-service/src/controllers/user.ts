@@ -69,7 +69,7 @@ export const userController = {
 		);
 		if (error) return reply.status(500).send({ error });
 		if (!data) return reply.status(404).send({ error: 'User not found' });
-		return reply.status(200).send(data);
+		return reply.status(200).send({ message: 'User updated' });
 	},
 
 	async delete(

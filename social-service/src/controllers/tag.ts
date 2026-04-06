@@ -31,9 +31,9 @@ export const tagController = {
 	},
 
 	async create(request: FastifyRequest<{ Body: NewTag }>, reply: FastifyReply) {
-		const { data, error } = await tagService.createTag(request.body);
+		const { error } = await tagService.createTag(request.body);
 		if (error) return reply.status(500).send({ error });
-		return reply.status(201).send(data);
+		return reply.status(201).send({ message: 'Tag created' });
 	},
 
 	async delete(
