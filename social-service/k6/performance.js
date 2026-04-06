@@ -2,7 +2,6 @@ import { check, group, sleep } from 'k6';
 import http from 'k6/http';
 import { Rate } from 'k6/metrics';
 
-// ─── Config ────────────────────────────────────────────────────────────────
 const BASE_URL = __ENV.BASE_URL || 'http://localhost:3333';
 
 const SAMPLE_USER_ID = __ENV.USER_ID;
@@ -11,7 +10,6 @@ const SAMPLE_COMMENT_ID = __ENV.COMMENT_ID;
 const SAMPLE_TAG_ID = __ENV.TAG_ID;
 const SAMPLE_SNIPPET_ID = __ENV.SNIPPET_ID;
 
-// ─── Load profile ──────────────────────────────────────────────────────────
 export const options = {
 	stages: [
 		{ duration: '30s', target: 10 }, // ramp up
@@ -45,7 +43,6 @@ function assertOk(res, name) {
 	errorRate.add(!ok);
 }
 
-// ─── Test scenarios ────────────────────────────────────────────────────────
 export default function () {
 	group('Posts', () => {
 		let res = http.get(`${BASE_URL}/posts`);
