@@ -5,14 +5,14 @@ import { likeSchema } from '@/types/like.js';
 
 export const likeRoutes = async (app: FastifyInstance) => {
 	app.get(
-		'/likes/:targetType/:targetId',
+		'/likes/:target_type/:target_id',
 		{
 			schema: {
 				tags: ['Likes'],
 				description: 'Get likes by target',
 				params: z.object({
-					targetType: z.enum(['post', 'comment']),
-					targetId: z.uuid(),
+					target_type: z.enum(['post', 'comment']),
+					target_id: z.uuid(),
 				}),
 				response: { 200: z.array(likeSchema) },
 			},
@@ -34,15 +34,15 @@ export const likeRoutes = async (app: FastifyInstance) => {
 	);
 
 	app.delete(
-		'/like/:userId/:targetType/:targetId',
+		'/like/:user_id/:target_type/:target_id',
 		{
 			schema: {
 				tags: ['Likes'],
 				description: 'Unlike a post or comment',
 				params: z.object({
-					userId: z.uuid(),
-					targetType: z.enum(['post', 'comment']),
-					targetId: z.uuid(),
+					user_id: z.uuid(),
+					target_type: z.enum(['post', 'comment']),
+					target_id: z.uuid(),
 				}),
 			},
 		},

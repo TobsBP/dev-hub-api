@@ -5,12 +5,12 @@ import { followSchema } from '@/types/follow.js';
 
 export const followRoutes = async (app: FastifyInstance) => {
 	app.get(
-		'/followers/:userId',
+		'/followers/:user_id',
 		{
 			schema: {
 				tags: ['Follows'],
 				description: 'Get followers of a user',
-				params: z.object({ userId: z.uuid() }),
+				params: z.object({ user_id: z.uuid() }),
 				response: { 200: z.array(followSchema) },
 			},
 		},
@@ -18,12 +18,12 @@ export const followRoutes = async (app: FastifyInstance) => {
 	);
 
 	app.get(
-		'/following/:userId',
+		'/following/:user_id',
 		{
 			schema: {
 				tags: ['Follows'],
 				description: 'Get users a user is following',
-				params: z.object({ userId: z.uuid() }),
+				params: z.object({ user_id: z.uuid() }),
 				response: { 200: z.array(followSchema) },
 			},
 		},
@@ -44,12 +44,12 @@ export const followRoutes = async (app: FastifyInstance) => {
 	);
 
 	app.delete(
-		'/follow/:followerId/:followingId',
+		'/follow/:follower_id/:following_id',
 		{
 			schema: {
 				tags: ['Follows'],
 				description: 'Unfollow a user',
-				params: z.object({ followerId: z.uuid(), followingId: z.uuid() }),
+				params: z.object({ follower_id: z.uuid(), following_id: z.uuid() }),
 			},
 		},
 		followController.unfollow,

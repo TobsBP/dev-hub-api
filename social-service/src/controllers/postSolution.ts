@@ -7,11 +7,11 @@ type PostSolution = z.infer<typeof postSolutionSchema>;
 
 export const postSolutionController = {
 	async getByPost(
-		request: FastifyRequest<{ Params: { postId: string } }>,
+		request: FastifyRequest<{ Params: { post_id: string } }>,
 		reply: FastifyReply,
 	) {
 		const { data, error } = await postSolutionService.getSolutionByPost(
-			request.params.postId,
+			request.params.post_id,
 		);
 		if (error) return reply.status(500).send({ error });
 		if (!data)
@@ -29,11 +29,11 @@ export const postSolutionController = {
 	},
 
 	async remove(
-		request: FastifyRequest<{ Params: { postId: string } }>,
+		request: FastifyRequest<{ Params: { post_id: string } }>,
 		reply: FastifyReply,
 	) {
 		const { error } = await postSolutionService.removeSolution(
-			request.params.postId,
+			request.params.post_id,
 		);
 		if (error) return reply.status(500).send({ error });
 		return reply.status(204).send();

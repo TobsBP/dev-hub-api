@@ -5,13 +5,13 @@ import { getReputationSchema, reputationSchema } from '@/types/reputation.js';
 
 export const reputationRoutes = async (app: FastifyInstance) => {
 	app.get(
-		'/reputations/:userId',
+		'/reputations/:user_id',
 		{
 			schema: {
 				...getReputationSchema,
 				tags: ['Reputation'],
 				description: 'Get reputation history of a user',
-				params: z.object({ userId: z.uuid() }),
+				params: z.object({ user_id: z.uuid() }),
 			},
 		},
 		reputationController.getByUser,

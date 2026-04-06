@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { tagService } from '@/services/tag.js';
-import type { NewTag, PostTag } from '@/types/tag.js';
+import type { NewTag } from '@/types/tag.js';
 
 export const tagController = {
 	async getAll(_request: FastifyRequest, reply: FastifyReply) {
@@ -20,11 +20,11 @@ export const tagController = {
 	},
 
 	async getByPost(
-		request: FastifyRequest<{ Params: { postId: string } }>,
+		request: FastifyRequest<{ Params: { post_id: string } }>,
 		reply: FastifyReply,
 	) {
 		const { data, error } = await tagService.getTagsByPost(
-			request.params.postId,
+			request.params.post_id,
 		);
 		if (error) return reply.status(500).send({ error });
 		return reply.status(200).send(data);
@@ -46,20 +46,21 @@ export const tagController = {
 	},
 
 	async addToPost(
-		request: FastifyRequest<{ Body: PostTag }>,
+		request: FastifyRequest<{ Params: { post_id: string; tag_id: string } }>,
 		reply: FastifyReply,
 	) {
-		const { error } = await tagService.addTagToPost(request.body);
+		const { post_id, tag_id } = request.params;
+		const { error } = await tagService.addTagToPost({ post_id, tag_id });
 		if (error) return reply.status(500).send({ error });
 		return reply.status(204).send();
 	},
 
 	async removeFromPost(
-		request: FastifyRequest<{ Params: { postId: string; tagId: string } }>,
+		request: FastifyRequest<{ Params: { post_id: string; tag_id: string } }>,
 		reply: FastifyReply,
 	) {
-		const { postId, tagId } = request.params;
-		const { error } = await tagService.removeTagFromPost(postId, tagId);
+		const { post_id, tag_id } = request.params;
+		const { error } = await tagService.removeTagFromPost(post_id, tag_id);
 		if (error) return reply.status(500).send({ error });
 		return reply.status(204).send();
 	},

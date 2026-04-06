@@ -20,11 +20,11 @@ export const postController = {
 	},
 
 	async getByUser(
-		request: FastifyRequest<{ Params: { userId: string } }>,
+		request: FastifyRequest<{ Params: { user_id: string } }>,
 		reply: FastifyReply,
 	) {
 		const { data, error } = await postService.getPostsByUser(
-			request.params.userId,
+			request.params.user_id,
 		);
 		if (error) return reply.status(500).send({ error });
 		return reply.status(200).send(data);

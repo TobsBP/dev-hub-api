@@ -5,14 +5,14 @@ import type { NewLike } from '@/types/like.js';
 export const likeController = {
 	async getByTarget(
 		request: FastifyRequest<{
-			Params: { targetType: string; targetId: string };
+			Params: { target_type: string; target_id: string };
 		}>,
 		reply: FastifyReply,
 	) {
-		const { targetType, targetId } = request.params;
+		const { target_type, target_id } = request.params;
 		const { data, error } = await likeService.getLikesByTarget(
-			targetType,
-			targetId,
+			target_type,
+			target_id,
 		);
 		if (error) return reply.status(500).send({ error });
 		return reply.status(200).send(data);
@@ -29,15 +29,15 @@ export const likeController = {
 
 	async delete(
 		request: FastifyRequest<{
-			Params: { userId: string; targetType: string; targetId: string };
+			Params: { user_id: string; target_type: string; target_id: string };
 		}>,
 		reply: FastifyReply,
 	) {
-		const { userId, targetType, targetId } = request.params;
+		const { user_id, target_type, target_id } = request.params;
 		const { error } = await likeService.deleteLike(
-			userId,
-			targetType,
-			targetId,
+			user_id,
+			target_type,
+			target_id,
 		);
 		if (error) return reply.status(500).send({ error });
 		return reply.status(204).send();

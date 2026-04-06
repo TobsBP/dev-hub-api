@@ -8,13 +8,13 @@ import {
 
 export const codeSnippetRoutes = async (app: FastifyInstance) => {
 	app.get(
-		'/code-snippets/:postId',
+		'/code-snippets/:post_id',
 		{
 			schema: {
 				...getCodeSnippetsSchema,
 				tags: ['Code Snippets'],
 				description: 'Get code snippets by post',
-				params: z.object({ postId: z.uuid() }),
+				params: z.object({ post_id: z.uuid() }),
 			},
 		},
 		codeSnippetController.getByPost,
@@ -40,7 +40,7 @@ export const codeSnippetRoutes = async (app: FastifyInstance) => {
 				tags: ['Code Snippets'],
 				description: 'Create a code snippet',
 				body: codeSnippetSchema.omit({ id: true }),
-				response: { 201: codeSnippetSchema },
+				response: { 201: z.object({ message: z.string() }) },
 			},
 		},
 		codeSnippetController.create,
@@ -54,7 +54,7 @@ export const codeSnippetRoutes = async (app: FastifyInstance) => {
 				description: 'Update a code snippet',
 				params: z.object({ id: z.uuid() }),
 				body: codeSnippetSchema.omit({ id: true, post_id: true }).partial(),
-				response: { 200: codeSnippetSchema },
+				response: { 200: z.object({ message: z.string() }) },
 			},
 		},
 		codeSnippetController.update,

@@ -5,13 +5,13 @@ import { commentSchema, getCommentsSchema } from '@/types/comment.js';
 
 export const commentRoutes = async (app: FastifyInstance) => {
 	app.get(
-		'/comments/:postId',
+		'/comments/:post_id',
 		{
 			schema: {
 				...getCommentsSchema,
 				tags: ['Comments'],
 				description: 'Get comments by post',
-				params: z.object({ postId: z.uuid() }),
+				params: z.object({ post_id: z.uuid() }),
 			},
 		},
 		commentController.getByPost,

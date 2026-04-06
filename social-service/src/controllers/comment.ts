@@ -4,11 +4,11 @@ import type { CommentUpdate, NewComment } from '@/types/comment.js';
 
 export const commentController = {
 	async getByPost(
-		request: FastifyRequest<{ Params: { postId: string } }>,
+		request: FastifyRequest<{ Params: { post_id: string } }>,
 		reply: FastifyReply,
 	) {
 		const { data, error } = await commentService.getCommentsByPost(
-			request.params.postId,
+			request.params.post_id,
 		);
 		if (error) return reply.status(500).send({ error });
 		return reply.status(200).send(data);

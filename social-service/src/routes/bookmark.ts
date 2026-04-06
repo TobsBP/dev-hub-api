@@ -5,12 +5,12 @@ import { bookmarkSchema } from '@/types/bookmark.js';
 
 export const bookmarkRoutes = async (app: FastifyInstance) => {
 	app.get(
-		'/bookmarks/:userId',
+		'/bookmarks/:user_id',
 		{
 			schema: {
 				tags: ['Bookmarks'],
 				description: 'Get bookmarks of a user',
-				params: z.object({ userId: z.uuid() }),
+				params: z.object({ user_id: z.uuid() }),
 				response: { 200: z.array(bookmarkSchema) },
 			},
 		},
@@ -31,12 +31,12 @@ export const bookmarkRoutes = async (app: FastifyInstance) => {
 	);
 
 	app.delete(
-		'/bookmark/:userId/:postId',
+		'/bookmark/:user_id/:post_id',
 		{
 			schema: {
 				tags: ['Bookmarks'],
 				description: 'Remove a bookmark',
-				params: z.object({ userId: z.uuid(), postId: z.uuid() }),
+				params: z.object({ user_id: z.uuid(), post_id: z.uuid() }),
 			},
 		},
 		bookmarkController.delete,

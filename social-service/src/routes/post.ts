@@ -24,12 +24,12 @@ export const postRoutes = async (app: FastifyInstance) => {
 	);
 
 	app.get(
-		'/posts/:userId',
+		'/posts/:user_id',
 		{
 			schema: {
 				tags: ['Posts'],
 				description: 'Get posts by user',
-				params: z.object({ userId: z.uuid() }),
+				params: z.object({ user_id: z.uuid() }),
 				response: { 200: z.array(postSchema) },
 			},
 		},

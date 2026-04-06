@@ -4,11 +4,11 @@ import type { NewReputation } from '@/types/reputation.js';
 
 export const reputationController = {
 	async getByUser(
-		request: FastifyRequest<{ Params: { userId: string } }>,
+		request: FastifyRequest<{ Params: { user_id: string } }>,
 		reply: FastifyReply,
 	) {
 		const { data, error } = await reputationService.getReputationByUser(
-			request.params.userId,
+			request.params.user_id,
 		);
 		if (error) return reply.status(500).send({ error });
 		return reply.status(200).send(data);

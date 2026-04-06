@@ -1,7 +1,7 @@
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { tagController } from '@/controllers/tag.js';
-import { getTagsSchema, postTagSchema, tagSchema } from '@/types/tag.js';
+import { getTagsSchema, tagSchema } from '@/types/tag.js';
 
 export const tagRoutes = async (app: FastifyInstance) => {
 	app.get(
@@ -24,12 +24,12 @@ export const tagRoutes = async (app: FastifyInstance) => {
 	);
 
 	app.get(
-		'/tags/:postId',
+		'/tags/:post_id',
 		{
 			schema: {
 				tags: ['Tags'],
 				description: 'Get tags of a post',
-				params: z.object({ postId: z.uuid() }),
+				params: z.object({ post_id: z.uuid() }),
 				response: { 200: z.array(tagSchema) },
 			},
 		},
@@ -43,7 +43,7 @@ export const tagRoutes = async (app: FastifyInstance) => {
 				tags: ['Tags'],
 				description: 'Create a tag',
 				body: tagSchema.omit({ id: true }),
-				response: { 201: tagSchema },
+				response: { 201: z.object({ message: z.string() }) },
 			},
 		},
 		tagController.create,
@@ -62,12 +62,12 @@ export const tagRoutes = async (app: FastifyInstance) => {
 	);
 
 	app.post(
-		'/tag',
+		'/tag/:post_id/:tag_id',
 		{
 			schema: {
 				tags: ['Tags'],
 				description: 'Add a tag to a post',
-				body: postTagSchema,
+				params: z.object({ post_id: z.uuid(), tag_id: z.uuid() }),
 			},
 		},
 		tagController.addToPost,
@@ -79,7 +79,7 @@ export const tagRoutes = async (app: FastifyInstance) => {
 			schema: {
 				tags: ['Tags'],
 				description: 'Remove a tag from a post',
-				params: z.object({ postId: z.uuid(), tagId: z.uuid() }),
+				params: z.object({ post_id: z.uuid(), tag_id: z.uuid() }),
 			},
 		},
 		tagController.removeFromPost,

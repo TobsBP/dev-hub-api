@@ -4,11 +4,11 @@ import type { CodeSnippetUpdate, NewCodeSnippet } from '@/types/codeSnippet.js';
 
 export const codeSnippetController = {
 	async getByPost(
-		request: FastifyRequest<{ Params: { postId: string } }>,
+		request: FastifyRequest<{ Params: { post_id: string } }>,
 		reply: FastifyReply,
 	) {
 		const { data, error } = await codeSnippetService.getSnippetsByPost(
-			request.params.postId,
+			request.params.post_id,
 		);
 		if (error) return reply.status(500).send({ error });
 		return reply.status(200).send(data);

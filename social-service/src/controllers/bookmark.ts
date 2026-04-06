@@ -4,11 +4,11 @@ import type { NewBookmark } from '@/types/bookmark.js';
 
 export const bookmarkController = {
 	async getByUser(
-		request: FastifyRequest<{ Params: { userId: string } }>,
+		request: FastifyRequest<{ Params: { user_id: string } }>,
 		reply: FastifyReply,
 	) {
 		const { data, error } = await bookmarkService.getBookmarksByUser(
-			request.params.userId,
+			request.params.user_id,
 		);
 		if (error) return reply.status(500).send({ error });
 		return reply.status(200).send(data);
@@ -24,11 +24,11 @@ export const bookmarkController = {
 	},
 
 	async delete(
-		request: FastifyRequest<{ Params: { userId: string; postId: string } }>,
+		request: FastifyRequest<{ Params: { user_id: string; post_id: string } }>,
 		reply: FastifyReply,
 	) {
-		const { userId, postId } = request.params;
-		const { error } = await bookmarkService.deleteBookmark(userId, postId);
+		const { user_id, post_id } = request.params;
+		const { error } = await bookmarkService.deleteBookmark(user_id, post_id);
 		if (error) return reply.status(500).send({ error });
 		return reply.status(204).send();
 	},

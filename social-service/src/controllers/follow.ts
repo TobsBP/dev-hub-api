@@ -4,22 +4,22 @@ import type { NewFollow } from '@/types/follow.js';
 
 export const followController = {
 	async getFollowers(
-		request: FastifyRequest<{ Params: { userId: string } }>,
+		request: FastifyRequest<{ Params: { user_id: string } }>,
 		reply: FastifyReply,
 	) {
 		const { data, error } = await followService.getFollowers(
-			request.params.userId,
+			request.params.user_id,
 		);
 		if (error) return reply.status(500).send({ error });
 		return reply.status(200).send(data);
 	},
 
 	async getFollowing(
-		request: FastifyRequest<{ Params: { userId: string } }>,
+		request: FastifyRequest<{ Params: { user_id: string } }>,
 		reply: FastifyReply,
 	) {
 		const { data, error } = await followService.getFollowing(
-			request.params.userId,
+			request.params.user_id,
 		);
 		if (error) return reply.status(500).send({ error });
 		return reply.status(200).send(data);
@@ -36,12 +36,12 @@ export const followController = {
 
 	async unfollow(
 		request: FastifyRequest<{
-			Params: { followerId: string; followingId: string };
+			Params: { follower_id: string; following_id: string };
 		}>,
 		reply: FastifyReply,
 	) {
-		const { followerId, followingId } = request.params;
-		const { error } = await followService.unfollow(followerId, followingId);
+		const { follower_id, following_id } = request.params;
+		const { error } = await followService.unfollow(follower_id, following_id);
 		if (error) return reply.status(500).send({ error });
 		return reply.status(204).send();
 	},

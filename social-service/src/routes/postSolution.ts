@@ -8,13 +8,13 @@ import {
 
 export const postSolutionRoutes = async (app: FastifyInstance) => {
 	app.get(
-		'/posts/:postId/solution',
+		'/posts/:post_id/solution',
 		{
 			schema: {
 				...getPostSolutionsSchema,
 				tags: ['Post Solutions'],
 				description: 'Get solution for a post',
-				params: z.object({ postId: z.uuid() }),
+				params: z.object({ post_id: z.uuid() }),
 				response: { 200: postSolutionSchema },
 			},
 		},
@@ -22,7 +22,7 @@ export const postSolutionRoutes = async (app: FastifyInstance) => {
 	);
 
 	app.put(
-		'/posts/:postId/solution',
+		'/posts/:post_id/solution',
 		{
 			schema: {
 				tags: ['Post Solutions'],
@@ -35,12 +35,12 @@ export const postSolutionRoutes = async (app: FastifyInstance) => {
 	);
 
 	app.delete(
-		'/posts/:postId/solution',
+		'/posts/:post_id/solution',
 		{
 			schema: {
 				tags: ['Post Solutions'],
 				description: 'Remove solution from a post',
-				params: z.object({ postId: z.uuid() }),
+				params: z.object({ post_id: z.uuid() }),
 			},
 		},
 		postSolutionController.remove,
