@@ -125,20 +125,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: 📦 Install k6
+        run: |
+          sudo gpg -k
+          sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install k6
+
       - name: 📁 Create reports directory
-        run: mkdir -p social-service/k6/reports
+        run: mkdir -p k6/reports
 
       - name: 🏋️ Run k6
-        uses: grafana/k6-action@v0.3.1
-        with:
-          filename: social-service/k6/performance.js
-          flags: >-
-            -e BASE_URL=${{ secrets.API_BASE_URL }}
-            -e USER_ID=${{ secrets.PERF_USER_ID }}
-            -e POST_ID=${{ secrets.PERF_POST_ID }}
-            -e COMMENT_ID=${{ secrets.PERF_COMMENT_ID }}
-            -e TAG_ID=${{ secrets.PERF_TAG_ID }}
-            -e SNIPPET_ID=${{ secrets.PERF_SNIPPET_ID }}
+        run: |
+          k6 run \
+            -e BASE_URL=${{ secrets.API_BASE_URL }} \
+            -e USER_ID=${{ secrets.PERF_USER_ID }} \
+            -e POST_ID=${{ secrets.PERF_POST_ID }} \
+            -e COMMENT_ID=${{ secrets.PERF_COMMENT_ID }} \
+            -e TAG_ID=${{ secrets.PERF_TAG_ID }} \
+            -e SNIPPET_ID=${{ secrets.PERF_SNIPPET_ID }} \
+            -e CI=true \
+            k6/performance.js
 
       - name: 📁 Upload k6 report
         uses: actions/upload-artifact@v4
