@@ -132,13 +132,13 @@ jobs:
         uses: grafana/k6-action@v0.3.1
         with:
           filename: social-service/k6/performance.js
-        env:
-          BASE_URL: ${{ secrets.API_BASE_URL }}
-          USER_ID: ${{ secrets.PERF_USER_ID }}
-          POST_ID: ${{ secrets.PERF_POST_ID }}
-          COMMENT_ID: ${{ secrets.PERF_COMMENT_ID }}
-          TAG_ID: ${{ secrets.PERF_TAG_ID }}
-          SNIPPET_ID: ${{ secrets.PERF_SNIPPET_ID }}
+          flags: >-
+            -e BASE_URL=${{ secrets.API_BASE_URL }}
+            -e USER_ID=${{ secrets.PERF_USER_ID }}
+            -e POST_ID=${{ secrets.PERF_POST_ID }}
+            -e COMMENT_ID=${{ secrets.PERF_COMMENT_ID }}
+            -e TAG_ID=${{ secrets.PERF_TAG_ID }}
+            -e SNIPPET_ID=${{ secrets.PERF_SNIPPET_ID }}
 
       - name: 📁 Upload k6 report
         uses: actions/upload-artifact@v4
