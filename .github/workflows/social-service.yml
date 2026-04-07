@@ -115,3 +115,30 @@ jobs:
         with:
           name: postman-test-results
           path: social-service/results.xml
+
+  performance:
+    name: 📈 Performance Tests
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 🏋️ Run k6
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: social-service/k6/performance.js
+        env:
+          BASE_URL: ${{ secrets.API_BASE_URL }}
+          USER_ID: ${{ secrets.PERF_USER_ID }}
+          POST_ID: ${{ secrets.PERF_POST_ID }}
+          COMMENT_ID: ${{ secrets.PERF_COMMENT_ID }}
+          TAG_ID: ${{ secrets.PERF_TAG_ID }}
+          SNIPPET_ID: ${{ secrets.PERF_SNIPPET_ID }}
+
+      - name: 📁 Upload k6 report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: k6-performance-report
+          path: social-service/k6/reports/
