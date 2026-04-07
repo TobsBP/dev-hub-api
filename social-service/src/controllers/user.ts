@@ -39,7 +39,11 @@ export const userController = {
 			bio: fields.bio ?? null,
 			avatarStream,
 		});
-		if (error) return reply.status(500).send({ error });
+		if (error) {
+			if ((error as { code?: string }).code === '23505')
+				return reply.status(409).send({ error: 'Email already in use' });
+			return reply.status(500).send({ error });
+		}
 		return reply.status(201).send({ message: 'User created' });
 	},
 
