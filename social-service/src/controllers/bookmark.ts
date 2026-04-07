@@ -28,7 +28,10 @@ export const bookmarkController = {
 		reply: FastifyReply,
 	) {
 		const { user_id, post_id } = request.params;
-		const { data, error } = await bookmarkService.deleteBookmark(user_id, post_id);
+		const { data, error } = await bookmarkService.deleteBookmark(
+			user_id,
+			post_id,
+		);
 		if (error) return reply.status(500).send({ error });
 		if (!data) return reply.status(404).send({ error: 'Bookmark not found' });
 		return reply.status(200).send({ message: 'Bookmark deleted' });

@@ -38,7 +38,8 @@ export const tagRepository = {
 	},
 
 	async removeFromPost(postId: string, tagId: string): Promise<boolean> {
-		const [row] = await db`DELETE FROM post_tags WHERE post_id = ${postId} AND tag_id = ${tagId} RETURNING post_id`;
+		const [row] =
+			await db`DELETE FROM post_tags WHERE post_id = ${postId} AND tag_id = ${tagId} RETURNING post_id`;
 		return !!row;
 	},
 };

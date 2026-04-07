@@ -18,7 +18,10 @@ export const followRepository = {
 		return follow;
 	},
 
-	async delete(followerId: string, followingId: string): Promise<Follow | null> {
+	async delete(
+		followerId: string,
+		followingId: string,
+	): Promise<Follow | null> {
 		const [row] = await db<Follow[]>`
       DELETE FROM follows
       WHERE follower_id = ${followerId} AND following_id = ${followingId}

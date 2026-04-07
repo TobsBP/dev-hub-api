@@ -22,7 +22,8 @@ export const postSolutionRepository = {
 	},
 
 	async delete(postId: string): Promise<boolean> {
-		const [row] = await db`DELETE FROM post_solutions WHERE post_id = ${postId} RETURNING post_id`;
+		const [row] =
+			await db`DELETE FROM post_solutions WHERE post_id = ${postId} RETURNING post_id`;
 		return !!row;
 	},
 };

@@ -41,7 +41,10 @@ export const followController = {
 		reply: FastifyReply,
 	) {
 		const { follower_id, following_id } = request.params;
-		const { data, error } = await followService.unfollow(follower_id, following_id);
+		const { data, error } = await followService.unfollow(
+			follower_id,
+			following_id,
+		);
 		if (error) return reply.status(500).send({ error });
 		if (!data) return reply.status(404).send({ error: 'Follow not found' });
 		return reply.status(200).send({ message: 'Unfollowed successfully' });
