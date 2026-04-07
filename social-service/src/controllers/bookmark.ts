@@ -30,6 +30,6 @@ export const bookmarkController = {
 		const { user_id, post_id } = request.params;
 		const { error } = await bookmarkService.deleteBookmark(user_id, post_id);
 		if (error) return reply.status(500).send({ error });
-		return reply.status(204).send();
+		return reply.status(200).send({ message: 'Bookmark deleted' });
 	},
 };

@@ -40,6 +40,6 @@ export const likeController = {
 			target_id,
 		);
 		if (error) return reply.status(500).send({ error });
-		return reply.status(204).send();
+		return reply.status(200).send({ message: 'Like removed' });
 	},
 };

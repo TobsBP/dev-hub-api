@@ -56,8 +56,9 @@ export const postController = {
 		request: FastifyRequest<{ Params: { id: string } }>,
 		reply: FastifyReply,
 	) {
-		const { error } = await postService.deletePost(request.params.id);
+		const { data, error } = await postService.deletePost(request.params.id);
 		if (error) return reply.status(500).send({ error });
-		return reply.status(204).send();
+		if (!data) return reply.status(404).send({ error: 'Post not found' });
+		return reply.status(200).send({ message: 'Post deleted' });
 	},
 };

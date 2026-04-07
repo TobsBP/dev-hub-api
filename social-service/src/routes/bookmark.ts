@@ -37,6 +37,7 @@ export const bookmarkRoutes = async (app: FastifyInstance) => {
 				tags: ['Bookmarks'],
 				description: 'Remove a bookmark',
 				params: z.object({ user_id: z.uuid(), post_id: z.uuid() }),
+				response: { 200: z.object({ message: z.string() }) },
 			},
 		},
 		bookmarkController.delete,

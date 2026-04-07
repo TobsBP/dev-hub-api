@@ -32,7 +32,8 @@ export const commentRepository = {
 		return comment ?? null;
 	},
 
-	async delete(id: string): Promise<void> {
-		await db`DELETE FROM comments WHERE id = ${id}`;
+	async delete(id: string): Promise<boolean> {
+		const [row] = await db`DELETE FROM comments WHERE id = ${id} RETURNING id`;
+		return !!row;
 	},
 };

@@ -67,6 +67,7 @@ export const codeSnippetRoutes = async (app: FastifyInstance) => {
 				tags: ['Code Snippets'],
 				description: 'Delete a code snippet',
 				params: z.object({ id: z.uuid() }),
+				response: { 200: z.object({ message: z.string() }) },
 			},
 		},
 		codeSnippetController.delete,

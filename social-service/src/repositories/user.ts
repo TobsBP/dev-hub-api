@@ -33,7 +33,8 @@ export const userRepository = {
 		return user ?? null;
 	},
 
-	async delete(id: string): Promise<void> {
-		await db`DELETE FROM users WHERE id = ${id}`;
+	async delete(id: string): Promise<boolean> {
+		const [row] = await db`DELETE FROM users WHERE id = ${id} RETURNING id`;
+		return !!row;
 	},
 };

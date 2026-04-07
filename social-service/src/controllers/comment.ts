@@ -52,8 +52,11 @@ export const commentController = {
 		request: FastifyRequest<{ Params: { id: string } }>,
 		reply: FastifyReply,
 	) {
-		const { error } = await commentService.deleteComment(request.params.id);
+		const { data, error } = await commentService.deleteComment(
+			request.params.id,
+		);
 		if (error) return reply.status(500).send({ error });
-		return reply.status(204).send();
+		if (!data) return reply.status(404).send({ error: 'Comment not found' });
+		return reply.status(200).send({ message: 'Comment deleted' });
 	},
 };

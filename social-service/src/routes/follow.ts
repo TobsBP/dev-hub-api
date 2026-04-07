@@ -50,6 +50,7 @@ export const followRoutes = async (app: FastifyInstance) => {
 				tags: ['Follows'],
 				description: 'Unfollow a user',
 				params: z.object({ follower_id: z.uuid(), following_id: z.uuid() }),
+				response: { 200: z.object({ message: z.string() }) },
 			},
 		},
 		followController.unfollow,

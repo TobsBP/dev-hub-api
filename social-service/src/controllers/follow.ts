@@ -43,6 +43,6 @@ export const followController = {
 		const { follower_id, following_id } = request.params;
 		const { error } = await followService.unfollow(follower_id, following_id);
 		if (error) return reply.status(500).send({ error });
-		return reply.status(204).send();
+		return reply.status(200).send({ message: 'Unfollowed successfully' });
 	},
 };

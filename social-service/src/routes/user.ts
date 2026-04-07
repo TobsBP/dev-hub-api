@@ -61,6 +61,7 @@ export const userRoutes = async (app: FastifyInstance) => {
 				tags: ['Users'],
 				description: 'Delete a user',
 				params: z.object({ id: z.uuid() }),
+				response: { 200: z.object({ message: z.string() }) },
 			},
 		},
 		userController.delete,

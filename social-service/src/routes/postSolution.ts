@@ -41,6 +41,7 @@ export const postSolutionRoutes = async (app: FastifyInstance) => {
 				tags: ['Post Solutions'],
 				description: 'Remove solution from a post',
 				params: z.object({ post_id: z.uuid() }),
+				response: { 200: z.object({ message: z.string() }) },
 			},
 		},
 		postSolutionController.remove,

@@ -64,6 +64,7 @@ export const commentRoutes = async (app: FastifyInstance) => {
 				tags: ['Comments'],
 				description: 'Delete a comment',
 				params: z.object({ id: z.uuid() }),
+				response: { 200: z.object({ message: z.string() }) },
 			},
 		},
 		commentController.delete,

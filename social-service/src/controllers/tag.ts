@@ -40,9 +40,10 @@ export const tagController = {
 		request: FastifyRequest<{ Params: { id: string } }>,
 		reply: FastifyReply,
 	) {
-		const { error } = await tagService.deleteTag(request.params.id);
+		const { data, error } = await tagService.deleteTag(request.params.id);
 		if (error) return reply.status(500).send({ error });
-		return reply.status(204).send();
+		if (!data) return reply.status(404).send({ error: 'Tag not found' });
+		return reply.status(200).send({ message: 'Tag deleted' });
 	},
 
 	async addToPost(
@@ -52,7 +53,7 @@ export const tagController = {
 		const { post_id, tag_id } = request.params;
 		const { error } = await tagService.addTagToPost({ post_id, tag_id });
 		if (error) return reply.status(500).send({ error });
-		return reply.status(204).send();
+		return reply.status(200).send({ message: 'Tag added to post' });
 	},
 
 	async removeFromPost(
@@ -62,6 +63,6 @@ export const tagController = {
 		const { post_id, tag_id } = request.params;
 		const { error } = await tagService.removeTagFromPost(post_id, tag_id);
 		if (error) return reply.status(500).send({ error });
-		return reply.status(204).send();
+		return reply.status(200).send({ message: 'Tag removed from post' });
 	},
 };

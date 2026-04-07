@@ -80,8 +80,9 @@ export const userController = {
 		request: FastifyRequest<{ Params: { id: string } }>,
 		reply: FastifyReply,
 	) {
-		const { error } = await userService.deleteUser(request.params.id);
+		const { data, error } = await userService.deleteUser(request.params.id);
 		if (error) return reply.status(500).send({ error });
-		return reply.status(204).send();
+		if (!data) return reply.status(404).send({ error: 'User not found' });
+		return reply.status(200).send({ message: 'User deleted' });
 	},
 };

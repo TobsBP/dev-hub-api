@@ -44,6 +44,7 @@ export const likeRoutes = async (app: FastifyInstance) => {
 					target_type: z.enum(['post', 'comment']),
 					target_id: z.uuid(),
 				}),
+				response: { 200: z.object({ message: z.string() }) },
 			},
 		},
 		likeController.delete,

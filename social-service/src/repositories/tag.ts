@@ -28,8 +28,9 @@ export const tagRepository = {
 		return tag;
 	},
 
-	async delete(id: string): Promise<void> {
-		await db`DELETE FROM tags WHERE id = ${id}`;
+	async delete(id: string): Promise<boolean> {
+		const [row] = await db`DELETE FROM tags WHERE id = ${id} RETURNING id`;
+		return !!row;
 	},
 
 	async addToPost(data: PostTag): Promise<void> {

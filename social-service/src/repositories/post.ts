@@ -34,7 +34,8 @@ export const postRepository = {
 		return post ?? null;
 	},
 
-	async delete(id: string): Promise<void> {
-		await db`DELETE FROM posts WHERE id = ${id}`;
+	async delete(id: string): Promise<boolean> {
+		const [row] = await db`DELETE FROM posts WHERE id = ${id} RETURNING id`;
+		return !!row;
 	},
 };

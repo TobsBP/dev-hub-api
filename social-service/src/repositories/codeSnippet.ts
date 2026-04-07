@@ -39,7 +39,9 @@ export const codeSnippetRepository = {
 		return snippet ?? null;
 	},
 
-	async delete(id: string): Promise<void> {
-		await db`DELETE FROM code_snippets WHERE id = ${id}`;
+	async delete(id: string): Promise<boolean> {
+		const [row] =
+			await db`DELETE FROM code_snippets WHERE id = ${id} RETURNING id`;
+		return !!row;
 	},
 };
