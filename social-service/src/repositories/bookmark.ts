@@ -16,7 +16,11 @@ export const bookmarkRepository = {
 		return bookmark;
 	},
 
-	async delete(userId: string, postId: string): Promise<void> {
-		await db`DELETE FROM bookmarks WHERE user_id = ${userId} AND post_id = ${postId}`;
+	async delete(userId: string, postId: string): Promise<Bookmark | null> {
+		const [row] = await db<Bookmark[]>`
+      DELETE FROM bookmarks WHERE user_id = ${userId} AND post_id = ${postId}
+      RETURNING *
+    `;
+		return row ?? null;
 	},
 };

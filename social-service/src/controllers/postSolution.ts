@@ -32,10 +32,11 @@ export const postSolutionController = {
 		request: FastifyRequest<{ Params: { post_id: string } }>,
 		reply: FastifyReply,
 	) {
-		const { error } = await postSolutionService.removeSolution(
+		const { data, error } = await postSolutionService.removeSolution(
 			request.params.post_id,
 		);
 		if (error) return reply.status(500).send({ error });
+		if (!data) return reply.status(404).send({ error: 'Solution not found' });
 		return reply.status(200).send({ message: 'Solution removed' });
 	},
 };

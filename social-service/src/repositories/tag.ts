@@ -37,7 +37,8 @@ export const tagRepository = {
 		await db`INSERT INTO post_tags ${db(data)} ON CONFLICT DO NOTHING`;
 	},
 
-	async removeFromPost(postId: string, tagId: string): Promise<void> {
-		await db`DELETE FROM post_tags WHERE post_id = ${postId} AND tag_id = ${tagId}`;
+	async removeFromPost(postId: string, tagId: string): Promise<boolean> {
+		const [row] = await db`DELETE FROM post_tags WHERE post_id = ${postId} AND tag_id = ${tagId} RETURNING post_id`;
+		return !!row;
 	},
 };

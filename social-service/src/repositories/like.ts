@@ -20,10 +20,12 @@ export const likeRepository = {
 		userId: string,
 		targetType: string,
 		targetId: string,
-	): Promise<void> {
-		await db`
+	): Promise<Like | null> {
+		const [row] = await db<Like[]>`
       DELETE FROM likes
       WHERE user_id = ${userId} AND target_type = ${targetType} AND target_id = ${targetId}
+      RETURNING *
     `;
+		return row ?? null;
 	},
 };

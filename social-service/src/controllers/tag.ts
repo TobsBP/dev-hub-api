@@ -61,8 +61,9 @@ export const tagController = {
 		reply: FastifyReply,
 	) {
 		const { post_id, tag_id } = request.params;
-		const { error } = await tagService.removeTagFromPost(post_id, tag_id);
+		const { data, error } = await tagService.removeTagFromPost(post_id, tag_id);
 		if (error) return reply.status(500).send({ error });
+		if (!data) return reply.status(404).send({ error: 'Tag not found on post' });
 		return reply.status(200).send({ message: 'Tag removed from post' });
 	},
 };

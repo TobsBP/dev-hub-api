@@ -34,12 +34,13 @@ export const likeController = {
 		reply: FastifyReply,
 	) {
 		const { user_id, target_type, target_id } = request.params;
-		const { error } = await likeService.deleteLike(
+		const { data, error } = await likeService.deleteLike(
 			user_id,
 			target_type,
 			target_id,
 		);
 		if (error) return reply.status(500).send({ error });
+		if (!data) return reply.status(404).send({ error: 'Like not found' });
 		return reply.status(200).send({ message: 'Like removed' });
 	},
 };
