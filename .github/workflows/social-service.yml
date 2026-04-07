@@ -125,6 +125,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: 📁 Create reports directory
+        run: mkdir -p social-service/k6/reports
+
       - name: 🏋️ Run k6
         uses: grafana/k6-action@v0.3.1
         with:

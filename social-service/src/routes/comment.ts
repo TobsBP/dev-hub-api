@@ -37,7 +37,7 @@ export const commentRoutes = async (app: FastifyInstance) => {
 				tags: ['Comments'],
 				description: 'Create a comment',
 				body: commentSchema.omit({ id: true, created_at: true }),
-				response: { 201: commentSchema },
+				response: { 201: z.object({ message: z.string() }) },
 			},
 		},
 		commentController.create,
