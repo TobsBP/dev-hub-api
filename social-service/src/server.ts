@@ -67,5 +67,5 @@ app.setErrorHandler((error: FastifyError, _request, reply) => {
 });
 
 app.listen({ port: 3333, host: '0.0.0.0' }).then(() => {
-	console.log('Docs available at http://localhost:3333/docs');
+	console.log('Docs availablee at http://localhost:3333/docs');
 });
