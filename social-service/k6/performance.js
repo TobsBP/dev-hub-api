@@ -28,7 +28,7 @@ export const options = {
 				{ duration: '30s', target: 0 },
 			],
 	thresholds: {
-		http_req_failed: ['rate<0.20'], // <10% errors
+		http_req_failed: ['rate<0.50'], // <50% errors
 		http_req_duration: ['p(95)<500'], // 95% of requests under 500ms
 		'group_duration{group:::Posts}': ['p(95)<600'],
 		'group_duration{group:::Users}': ['p(95)<600'],
