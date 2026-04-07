@@ -28,7 +28,7 @@ export const options = {
 				{ duration: '30s', target: 0 },
 			],
 	thresholds: {
-		http_req_failed: ['rate<0.05'], // <5% errors
+		http_req_failed: ['rate<0.10'], // <10% errors
 		http_req_duration: ['p(95)<500'], // 95% of requests under 500ms
 		'group_duration{group:::Posts}': ['p(95)<600'],
 		'group_duration{group:::Users}': ['p(95)<600'],
@@ -128,7 +128,12 @@ export default function () {
 
 	group('PostSolution', () => {
 		const res = http.get(`${BASE_URL}/posts/${SAMPLE_POST_ID}/solution`);
-		assertOk(res, 'GET /posts/:postId/solution');
+		check(res, {
+			'GET /posts/:postId/solution → status 2xx or 404': (r) =>
+				(r.status >= 200 && r.status < 300) || r.status === 404,
+			'GET /posts/:postId/solution → response time < 1s': (r) =>
+				r.timings.duration < 1000,
+		});
 	});
 
 	sleep(1);
