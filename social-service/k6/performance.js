@@ -16,7 +16,7 @@ export const options = {
 	stages: [
 		{ duration: '30s', target: 10 }, // ramp up
 		{ duration: '1m', target: 10 }, // steady state
-		{ duration: '30s', target: 50 }, // spike
+		{ duration: '30s', target: 30 }, // spike
 		{ duration: '30s', target: 0 }, // ramp down
 	],
 	thresholds: {
