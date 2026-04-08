@@ -2,6 +2,7 @@ import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { followController } from '@/controllers/follow.js';
 import { followSchema } from '@/types/follow.js';
+import { authenticate } from '@/utils/authenticate.js';
 
 export const followRoutes = async (app: FastifyInstance) => {
 	app.get(
@@ -33,6 +34,7 @@ export const followRoutes = async (app: FastifyInstance) => {
 	app.post(
 		'/follows',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Follows'],
 				description: 'Follow a user',
@@ -46,6 +48,7 @@ export const followRoutes = async (app: FastifyInstance) => {
 	app.delete(
 		'/follow/:follower_id/:following_id',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Follows'],
 				description: 'Unfollow a user',

@@ -9,58 +9,51 @@ export const tagController = {
 		return reply.status(200).send(data);
 	},
 
-	async getById(
-		request: FastifyRequest<{ Params: { id: string } }>,
-		reply: FastifyReply,
-	) {
-		const { data, error } = await tagService.getTagById(request.params.id);
+	async getById(request: FastifyRequest, reply: FastifyReply) {
+		const { id } = request.params as { id: string };
+		const { data, error } = await tagService.getTagById(id);
 		if (error) return reply.status(500).send({ error });
 		if (!data) return reply.status(404).send({ error: 'Tag not found' });
 		return reply.status(200).send(data);
 	},
 
-	async getByPost(
-		request: FastifyRequest<{ Params: { post_id: string } }>,
-		reply: FastifyReply,
-	) {
-		const { data, error } = await tagService.getTagsByPost(
-			request.params.post_id,
-		);
+	async getByPost(request: FastifyRequest, reply: FastifyReply) {
+		const { post_id } = request.params as { post_id: string };
+		const { data, error } = await tagService.getTagsByPost(post_id);
 		if (error) return reply.status(500).send({ error });
 		return reply.status(200).send(data);
 	},
 
-	async create(request: FastifyRequest<{ Body: NewTag }>, reply: FastifyReply) {
-		const { error } = await tagService.createTag(request.body);
+	async create(request: FastifyRequest, reply: FastifyReply) {
+		const body = request.body as NewTag;
+		const { error } = await tagService.createTag(body);
 		if (error) return reply.status(500).send({ error });
 		return reply.status(201).send({ message: 'Tag created' });
 	},
 
-	async delete(
-		request: FastifyRequest<{ Params: { id: string } }>,
-		reply: FastifyReply,
-	) {
-		const { data, error } = await tagService.deleteTag(request.params.id);
+	async delete(request: FastifyRequest, reply: FastifyReply) {
+		const { id } = request.params as { id: string };
+		const { data, error } = await tagService.deleteTag(id);
 		if (error) return reply.status(500).send({ error });
 		if (!data) return reply.status(404).send({ error: 'Tag not found' });
 		return reply.status(200).send({ message: 'Tag deleted' });
 	},
 
-	async addToPost(
-		request: FastifyRequest<{ Params: { post_id: string; tag_id: string } }>,
-		reply: FastifyReply,
-	) {
-		const { post_id, tag_id } = request.params;
+	async addToPost(request: FastifyRequest, reply: FastifyReply) {
+		const { post_id, tag_id } = request.params as {
+			post_id: string;
+			tag_id: string;
+		};
 		const { error } = await tagService.addTagToPost({ post_id, tag_id });
 		if (error) return reply.status(500).send({ error });
 		return reply.status(200).send({ message: 'Tag added to post' });
 	},
 
-	async removeFromPost(
-		request: FastifyRequest<{ Params: { post_id: string; tag_id: string } }>,
-		reply: FastifyReply,
-	) {
-		const { post_id, tag_id } = request.params;
+	async removeFromPost(request: FastifyRequest, reply: FastifyReply) {
+		const { post_id, tag_id } = request.params as {
+			post_id: string;
+			tag_id: string;
+		};
 		const { data, error } = await tagService.removeTagFromPost(post_id, tag_id);
 		if (error) return reply.status(500).send({ error });
 		if (!data)

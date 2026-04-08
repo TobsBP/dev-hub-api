@@ -9,23 +9,17 @@ export const postController = {
 		return reply.status(200).send(data);
 	},
 
-	async getById(
-		request: FastifyRequest<{ Params: { id: string } }>,
-		reply: FastifyReply,
-	) {
-		const { data, error } = await postService.getPostById(request.params.id);
+	async getById(request: FastifyRequest, reply: FastifyReply) {
+		const { id } = request.params as { id: string };
+		const { data, error } = await postService.getPostById(id);
 		if (error) return reply.status(500).send({ error });
 		if (!data) return reply.status(404).send({ error: 'Post not found' });
 		return reply.status(200).send(data);
 	},
 
-	async getByUser(
-		request: FastifyRequest<{ Params: { user_id: string } }>,
-		reply: FastifyReply,
-	) {
-		const { data, error } = await postService.getPostsByUser(
-			request.params.user_id,
-		);
+	async getByUser(request: FastifyRequest, reply: FastifyReply) {
+		const { user_id } = request.params as { user_id: string };
+		const { data, error } = await postService.getPostsByUser(user_id);
 		if (error) return reply.status(500).send({ error });
 		return reply.status(200).send(data);
 	},
@@ -53,24 +47,18 @@ export const postController = {
 		return reply.status(201).send({ message: 'Post created' });
 	},
 
-	async update(
-		request: FastifyRequest<{ Params: { id: string }; Body: PostUpdate }>,
-		reply: FastifyReply,
-	) {
-		const { data, error } = await postService.updatePost(
-			request.params.id,
-			request.body,
-		);
+	async update(request: FastifyRequest, reply: FastifyReply) {
+		const { id } = request.params as { id: string };
+		const body = request.body as PostUpdate;
+		const { data, error } = await postService.updatePost(id, body);
 		if (error) return reply.status(500).send({ error });
 		if (!data) return reply.status(404).send({ error: 'Post not found' });
 		return reply.status(200).send({ message: 'Post updated' });
 	},
 
-	async delete(
-		request: FastifyRequest<{ Params: { id: string } }>,
-		reply: FastifyReply,
-	) {
-		const { data, error } = await postService.deletePost(request.params.id);
+	async delete(request: FastifyRequest, reply: FastifyReply) {
+		const { id } = request.params as { id: string };
+		const { data, error } = await postService.deletePost(id);
 		if (error) return reply.status(500).send({ error });
 		if (!data) return reply.status(404).send({ error: 'Post not found' });
 		return reply.status(200).send({ message: 'Post deleted' });

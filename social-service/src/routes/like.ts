@@ -2,6 +2,7 @@ import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { likeController } from '@/controllers/like.js';
 import { likeSchema } from '@/types/like.js';
+import { authenticate } from '@/utils/authenticate.js';
 
 export const likeRoutes = async (app: FastifyInstance) => {
 	app.get(
@@ -23,6 +24,7 @@ export const likeRoutes = async (app: FastifyInstance) => {
 	app.post(
 		'/likes',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Likes'],
 				description: 'Like a post or comment',
@@ -36,6 +38,7 @@ export const likeRoutes = async (app: FastifyInstance) => {
 	app.delete(
 		'/like/:user_id/:target_type/:target_id',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Likes'],
 				description: 'Unlike a post or comment',

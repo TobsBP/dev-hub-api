@@ -2,6 +2,7 @@ import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { postController } from '@/controllers/post.js';
 import { getPostsSchema, postSchema } from '@/types/post.js';
+import { authenticate } from '@/utils/authenticate.js';
 
 export const postRoutes = async (app: FastifyInstance) => {
 	app.get(
@@ -39,6 +40,7 @@ export const postRoutes = async (app: FastifyInstance) => {
 	app.post(
 		'/post',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Posts'],
 				description:
@@ -53,6 +55,7 @@ export const postRoutes = async (app: FastifyInstance) => {
 	app.patch(
 		'/post/:id',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Posts'],
 				description: 'Update a post',
@@ -69,6 +72,7 @@ export const postRoutes = async (app: FastifyInstance) => {
 	app.delete(
 		'/post/:id',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Posts'],
 				description: 'Delete a post',

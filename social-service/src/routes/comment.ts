@@ -2,6 +2,7 @@ import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { commentController } from '@/controllers/comment.js';
 import { commentSchema, getCommentsSchema } from '@/types/comment.js';
+import { authenticate } from '@/utils/authenticate.js';
 
 export const commentRoutes = async (app: FastifyInstance) => {
 	app.get(
@@ -33,6 +34,7 @@ export const commentRoutes = async (app: FastifyInstance) => {
 	app.post(
 		'/comments',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Comments'],
 				description: 'Create a comment',
@@ -46,6 +48,7 @@ export const commentRoutes = async (app: FastifyInstance) => {
 	app.patch(
 		'/comment/:id',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Comments'],
 				description: 'Update a comment',
@@ -60,6 +63,7 @@ export const commentRoutes = async (app: FastifyInstance) => {
 	app.delete(
 		'/comment/:id',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Comments'],
 				description: 'Delete a comment',

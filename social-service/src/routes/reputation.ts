@@ -2,6 +2,7 @@ import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { reputationController } from '@/controllers/reputation.js';
 import { getReputationSchema, reputationSchema } from '@/types/reputation.js';
+import { authenticate } from '@/utils/authenticate.js';
 
 export const reputationRoutes = async (app: FastifyInstance) => {
 	app.get(
@@ -20,6 +21,7 @@ export const reputationRoutes = async (app: FastifyInstance) => {
 	app.post(
 		'/reputation',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Reputation'],
 				description: 'Add a reputation entry',

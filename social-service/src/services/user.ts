@@ -5,6 +5,16 @@ import { userRepository } from '@/repositories/user.js';
 import type { NewUserInput, UserUpdate } from '@/types/user.js';
 
 export const userService = {
+	async login(email: string, password: string) {
+		return withCapture(async () => {
+			const user = await userRepository.findByEmail(email);
+			if (!user) return null;
+			const valid = await bcrypt.compare(password, user.password_hash);
+			if (!valid) return null;
+			return user;
+		});
+	},
+
 	async getUsers() {
 		return withCapture(() => userRepository.findAll());
 	},

@@ -3,44 +3,32 @@ import { followService } from '@/services/follow.js';
 import type { NewFollow } from '@/types/follow.js';
 
 export const followController = {
-	async getFollowers(
-		request: FastifyRequest<{ Params: { user_id: string } }>,
-		reply: FastifyReply,
-	) {
-		const { data, error } = await followService.getFollowers(
-			request.params.user_id,
-		);
+	async getFollowers(request: FastifyRequest, reply: FastifyReply) {
+		const { user_id } = request.params as { user_id: string };
+		const { data, error } = await followService.getFollowers(user_id);
 		if (error) return reply.status(500).send({ error });
 		return reply.status(200).send(data);
 	},
 
-	async getFollowing(
-		request: FastifyRequest<{ Params: { user_id: string } }>,
-		reply: FastifyReply,
-	) {
-		const { data, error } = await followService.getFollowing(
-			request.params.user_id,
-		);
+	async getFollowing(request: FastifyRequest, reply: FastifyReply) {
+		const { user_id } = request.params as { user_id: string };
+		const { data, error } = await followService.getFollowing(user_id);
 		if (error) return reply.status(500).send({ error });
 		return reply.status(200).send(data);
 	},
 
-	async follow(
-		request: FastifyRequest<{ Body: NewFollow }>,
-		reply: FastifyReply,
-	) {
-		const { error } = await followService.follow(request.body);
+	async follow(request: FastifyRequest, reply: FastifyReply) {
+		const body = request.body as NewFollow;
+		const { error } = await followService.follow(body);
 		if (error) return reply.status(500).send({ error });
 		return reply.status(201).send({ message: 'Followed successfully' });
 	},
 
-	async unfollow(
-		request: FastifyRequest<{
-			Params: { follower_id: string; following_id: string };
-		}>,
-		reply: FastifyReply,
-	) {
-		const { follower_id, following_id } = request.params;
+	async unfollow(request: FastifyRequest, reply: FastifyReply) {
+		const { follower_id, following_id } = request.params as {
+			follower_id: string;
+			following_id: string;
+		};
 		const { data, error } = await followService.unfollow(
 			follower_id,
 			following_id,

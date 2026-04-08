@@ -3,63 +3,42 @@ import { codeSnippetService } from '@/services/codeSnippet.js';
 import type { CodeSnippetUpdate, NewCodeSnippet } from '@/types/codeSnippet.js';
 
 export const codeSnippetController = {
-	async getByPost(
-		request: FastifyRequest<{ Params: { post_id: string } }>,
-		reply: FastifyReply,
-	) {
-		const { data, error } = await codeSnippetService.getSnippetsByPost(
-			request.params.post_id,
-		);
+	async getByPost(request: FastifyRequest, reply: FastifyReply) {
+		const { post_id } = request.params as { post_id: string };
+		const { data, error } = await codeSnippetService.getSnippetsByPost(post_id);
 		if (error) return reply.status(500).send({ error });
 		return reply.status(200).send(data);
 	},
 
-	async getById(
-		request: FastifyRequest<{ Params: { id: string } }>,
-		reply: FastifyReply,
-	) {
-		const { data, error } = await codeSnippetService.getSnippetById(
-			request.params.id,
-		);
+	async getById(request: FastifyRequest, reply: FastifyReply) {
+		const { id } = request.params as { id: string };
+		const { data, error } = await codeSnippetService.getSnippetById(id);
 		if (error) return reply.status(500).send({ error });
 		if (!data)
 			return reply.status(404).send({ error: 'Code snippet not found' });
 		return reply.status(200).send(data);
 	},
 
-	async create(
-		request: FastifyRequest<{ Body: NewCodeSnippet }>,
-		reply: FastifyReply,
-	) {
-		const { error } = await codeSnippetService.createSnippet(request.body);
+	async create(request: FastifyRequest, reply: FastifyReply) {
+		const body = request.body as NewCodeSnippet;
+		const { error } = await codeSnippetService.createSnippet(body);
 		if (error) return reply.status(500).send({ error });
 		return reply.status(201).send({ message: 'Code snippet created' });
 	},
 
-	async update(
-		request: FastifyRequest<{
-			Params: { id: string };
-			Body: CodeSnippetUpdate;
-		}>,
-		reply: FastifyReply,
-	) {
-		const { data, error } = await codeSnippetService.updateSnippet(
-			request.params.id,
-			request.body,
-		);
+	async update(request: FastifyRequest, reply: FastifyReply) {
+		const { id } = request.params as { id: string };
+		const body = request.body as CodeSnippetUpdate;
+		const { data, error } = await codeSnippetService.updateSnippet(id, body);
 		if (error) return reply.status(500).send({ error });
 		if (!data)
 			return reply.status(404).send({ error: 'Code snippet not found' });
 		return reply.status(200).send({ message: 'Code snippet updated' });
 	},
 
-	async delete(
-		request: FastifyRequest<{ Params: { id: string } }>,
-		reply: FastifyReply,
-	) {
-		const { data, error } = await codeSnippetService.deleteSnippet(
-			request.params.id,
-		);
+	async delete(request: FastifyRequest, reply: FastifyReply) {
+		const { id } = request.params as { id: string };
+		const { data, error } = await codeSnippetService.deleteSnippet(id);
 		if (error) return reply.status(500).send({ error });
 		if (!data) return reply.status(404).send({ error: 'Snippet not found' });
 		return reply.status(200).send({ message: 'Snippet deleted' });

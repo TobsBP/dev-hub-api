@@ -2,6 +2,7 @@ import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { bookmarkController } from '@/controllers/bookmark.js';
 import { bookmarkSchema } from '@/types/bookmark.js';
+import { authenticate } from '@/utils/authenticate.js';
 
 export const bookmarkRoutes = async (app: FastifyInstance) => {
 	app.get(
@@ -20,6 +21,7 @@ export const bookmarkRoutes = async (app: FastifyInstance) => {
 	app.post(
 		'/bookmarks',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Bookmarks'],
 				description: 'Bookmark a post',
@@ -33,6 +35,7 @@ export const bookmarkRoutes = async (app: FastifyInstance) => {
 	app.delete(
 		'/bookmark/:user_id/:post_id',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Bookmarks'],
 				description: 'Remove a bookmark',

@@ -2,6 +2,7 @@ import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { userController } from '@/controllers/user.js';
 import { getUsersSchema, userSchema } from '@/types/user.js';
+import { authenticate } from '@/utils/authenticate.js';
 
 const safeUserSchema = userSchema.omit({ password_hash: true });
 
@@ -42,6 +43,7 @@ export const userRoutes = async (app: FastifyInstance) => {
 	app.patch(
 		'/user/:id',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Users'],
 				description:
@@ -57,6 +59,7 @@ export const userRoutes = async (app: FastifyInstance) => {
 	app.delete(
 		'/user/:id',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Users'],
 				description: 'Delete a user',

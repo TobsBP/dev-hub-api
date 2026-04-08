@@ -42,6 +42,7 @@ app.register(fastifySwagger, {
 			description: 'API to make posts, comments, likes',
 			version: '1.0.0',
 		},
+		security: [{ bearerAuth: [] }],
 		components: {
 			securitySchemes: {
 				bearerAuth: {

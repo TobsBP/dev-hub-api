@@ -9,11 +9,9 @@ export const userController = {
 		return reply.status(200).send(data);
 	},
 
-	async getById(
-		request: FastifyRequest<{ Params: { id: string } }>,
-		reply: FastifyReply,
-	) {
-		const { data, error } = await userService.getUserById(request.params.id);
+	async getById(request: FastifyRequest, reply: FastifyReply) {
+		const { id } = request.params as { id: string };
+		const { data, error } = await userService.getUserById(id);
 		if (error) return reply.status(500).send({ error });
 		if (!data) return reply.status(404).send({ error: 'User not found' });
 		return reply.status(200).send(data);
@@ -47,10 +45,8 @@ export const userController = {
 		return reply.status(201).send({ message: 'User created' });
 	},
 
-	async update(
-		request: FastifyRequest<{ Params: { id: string } }>,
-		reply: FastifyReply,
-	) {
+	async update(request: FastifyRequest, reply: FastifyReply) {
+		const { id } = request.params as { id: string };
 		const parts = request.parts();
 		const fields: Record<string, string> = {};
 		let avatarStream: Readable | undefined;
@@ -67,20 +63,15 @@ export const userController = {
 			typeof userService.updateUser
 		>[1];
 
-		const { data, error } = await userService.updateUser(
-			request.params.id,
-			payload,
-		);
+		const { data, error } = await userService.updateUser(id, payload);
 		if (error) return reply.status(500).send({ error });
 		if (!data) return reply.status(404).send({ error: 'User not found' });
 		return reply.status(200).send({ message: 'User updated' });
 	},
 
-	async delete(
-		request: FastifyRequest<{ Params: { id: string } }>,
-		reply: FastifyReply,
-	) {
-		const { data, error } = await userService.deleteUser(request.params.id);
+	async delete(request: FastifyRequest, reply: FastifyReply) {
+		const { id } = request.params as { id: string };
+		const { data, error } = await userService.deleteUser(id);
 		if (error) return reply.status(500).send({ error });
 		if (!data) return reply.status(404).send({ error: 'User not found' });
 		return reply.status(200).send({ message: 'User deleted' });

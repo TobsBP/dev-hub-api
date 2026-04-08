@@ -5,6 +5,7 @@ import {
 	getPostSolutionsSchema,
 	postSolutionSchema,
 } from '@/types/postSolution.js';
+import { authenticate } from '@/utils/authenticate.js';
 
 export const postSolutionRoutes = async (app: FastifyInstance) => {
 	app.get(
@@ -24,6 +25,7 @@ export const postSolutionRoutes = async (app: FastifyInstance) => {
 	app.put(
 		'/posts/:post_id/solution',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Post Solutions'],
 				description: 'Set solution for a post',
@@ -37,6 +39,7 @@ export const postSolutionRoutes = async (app: FastifyInstance) => {
 	app.delete(
 		'/posts/:post_id/solution',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Post Solutions'],
 				description: 'Remove solution from a post',

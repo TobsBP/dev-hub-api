@@ -5,6 +5,7 @@ import {
 	codeSnippetSchema,
 	getCodeSnippetsSchema,
 } from '@/types/codeSnippet.js';
+import { authenticate } from '@/utils/authenticate.js';
 
 export const codeSnippetRoutes = async (app: FastifyInstance) => {
 	app.get(
@@ -36,6 +37,7 @@ export const codeSnippetRoutes = async (app: FastifyInstance) => {
 	app.post(
 		'/code-snippets',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Code Snippets'],
 				description: 'Create a code snippet',
@@ -49,6 +51,7 @@ export const codeSnippetRoutes = async (app: FastifyInstance) => {
 	app.patch(
 		'/code-snippet/:id',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Code Snippets'],
 				description: 'Update a code snippet',
@@ -63,6 +66,7 @@ export const codeSnippetRoutes = async (app: FastifyInstance) => {
 	app.delete(
 		'/code-snippet/:id',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Code Snippets'],
 				description: 'Delete a code snippet',

@@ -2,6 +2,7 @@ import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { tagController } from '@/controllers/tag.js';
 import { getTagsSchema, tagSchema } from '@/types/tag.js';
+import { authenticate } from '@/utils/authenticate.js';
 
 export const tagRoutes = async (app: FastifyInstance) => {
 	app.get(
@@ -39,6 +40,7 @@ export const tagRoutes = async (app: FastifyInstance) => {
 	app.post(
 		'/tags',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Tags'],
 				description: 'Create a tag',
@@ -52,6 +54,7 @@ export const tagRoutes = async (app: FastifyInstance) => {
 	app.delete(
 		'/tag/:id',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Tags'],
 				description: 'Delete a tag',
@@ -65,6 +68,7 @@ export const tagRoutes = async (app: FastifyInstance) => {
 	app.post(
 		'/tag/:post_id/:tag_id',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Tags'],
 				description: 'Add a tag to a post',
@@ -78,6 +82,7 @@ export const tagRoutes = async (app: FastifyInstance) => {
 	app.delete(
 		'/tag/:postId/:tagId',
 		{
+			preHandler: [authenticate],
 			schema: {
 				tags: ['Tags'],
 				description: 'Remove a tag from a post',
