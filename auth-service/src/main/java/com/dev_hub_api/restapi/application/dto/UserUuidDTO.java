@@ -1,6 +1,8 @@
 package com.dev_hub_api.restapi.application.dto;
 
-import java.util.UUID;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
-public record UserUuidDTO(String email) {
+public record UserUuidDTO(
+                            @Email @NotBlank String email) {
 }
