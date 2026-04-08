@@ -48,7 +48,7 @@ export const userRoutes = async (app: FastifyInstance) => {
 					'Update a user\n\n**Fields (multipart/form-data):**\n- `username` (string, max 50) — optional\n- `email` (string, max 100) — optional\n- `bio` (string) — optional\n- `avatar` (file) — optional',
 				consumes: ['multipart/form-data'],
 				params: z.object({ id: z.uuid() }),
-				response: { 200: safeUserSchema },
+				response: { 200: z.object({ message: z.string() }) },
 			},
 		},
 		userController.update,

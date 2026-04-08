@@ -41,9 +41,10 @@ export const postRoutes = async (app: FastifyInstance) => {
 		{
 			schema: {
 				tags: ['Posts'],
-				description: 'Create a post',
-				body: postSchema.omit({ id: true, created_at: true, updated_at: true }),
-				response: { 201: postSchema },
+				description:
+					'Create a post\n\n**Fields (multipart/form-data):**\n- `user_id` (uuid) — required\n- `content` (string, min 5) — required\n- `type` (string) — required\n- `image` (file) — optional',
+				consumes: ['multipart/form-data'],
+				response: { 201: z.object({ message: z.string() }) },
 			},
 		},
 		postController.create,

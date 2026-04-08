@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { postService } from '@/services/post.js';
-import type { NewPost, PostUpdate } from '@/types/post.js';
+import type { PostUpdate } from '@/types/post.js';
 
 export const postController = {
 	async getAll(_request: FastifyRequest, reply: FastifyReply) {
@@ -30,11 +30,25 @@ export const postController = {
 		return reply.status(200).send(data);
 	},
 
-	async create(
-		request: FastifyRequest<{ Body: NewPost }>,
-		reply: FastifyReply,
-	) {
-		const { error } = await postService.createPost(request.body);
+	async create(request: FastifyRequest, reply: FastifyReply) {
+		const parts = request.parts();
+		const fields: Record<string, string> = {};
+		let imageStream: import('node:stream').Readable | undefined;
+
+		for await (const part of parts) {
+			if (part.type === 'file' && part.fieldname === 'image') {
+				imageStream = part.file;
+			} else if (part.type === 'field') {
+				fields[part.fieldname] = part.value as string;
+			}
+		}
+
+		const { error } = await postService.createPost({
+			user_id: fields.user_id,
+			content: fields.content,
+			type: fields.type,
+			imageStream,
+		});
 		if (error) return reply.status(500).send({ error });
 		return reply.status(201).send({ message: 'Post created' });
 	},
