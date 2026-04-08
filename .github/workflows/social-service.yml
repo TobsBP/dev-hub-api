@@ -102,7 +102,9 @@ jobs:
             --env-var "BASE_URL=${{ secrets.API_BASE_URL }}" \
             --env-var "TEST_EMAIL=${{ secrets.TEST_EMAIL }}" \
             --env-var "TEST_PASSWORD=${{ secrets.TEST_PASSWORD }}" \
-            --env-var "USER_ID=${{ secrets.TEST_PASSWORD }}" \
+            --env-var "USER_ID=${{ secrets.PERF_USER_ID }}" \
+            --env-var "POST_ID=${{ secrets.PERF_POST_ID }}" \
+            --env-var "COMMENT_ID=${{ secrets.PERF_COMMENT_ID }}" \
             --reporters junit \
             --reporter-junit-export results.xml
 
