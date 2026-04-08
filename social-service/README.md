@@ -41,6 +41,85 @@ JWT_SECRET=your_jwt_secret
 | `npm start` | Inicia o build compilado |
 | `npm run lint` | Verifica e corrige o código com Biome |
 
+## Testes
+
+A suíte de testes é composta por **20 casos automatizados** (TC-001 a TC-020) organizados em duas categorias:
+
+| Categoria | IDs | Qtd. |
+|---|---|---|
+| Caminho Feliz (dados válidos) | TC-001 a TC-010 | 10 |
+| Dados Inválidos / Inoportunos | TC-011 a TC-020 | 10 |
+
+A collection está em `postman/social-service-tests.postman_collection.json`.
+
+### Pré-requisitos
+
+- [Postman CLI (Newman)](https://learning.postman.com/docs/collections/using-newman-cli/installing-running-newman/) instalado globalmente:
+
+```bash
+npm install -g newman newman-reporter-htmlextra
+```
+
+### Variáveis necessárias
+
+Antes de rodar, preencha as variáveis da collection (via `--env-var` na CLI ou editando diretamente no Postman):
+
+| Variável | Descrição |
+|---|---|
+| `BASE_URL` | URL base da API (padrão: `http://localhost:3333`) |
+| `TEST_EMAIL` | E-mail de um usuário existente no banco |
+| `TEST_PASSWORD` | Senha do usuário acima |
+| `USER_ID` | UUID de um usuário existente |
+| `POST_ID` | UUID de um post existente |
+| `COMMENT_ID` | UUID de um comentário existente |
+
+### Importar no Postman (UI)
+
+1. Abra o Postman
+2. Clique em **Import**
+3. Selecione o arquivo `postman/social-service-tests.postman_collection.json`
+4. Preencha as variáveis da collection em **Variables**
+5. Execute via **Run collection**
+
+### Executar via linha de comando
+
+```bash
+newman run postman/social-service-tests.postman_collection.json \
+  --env-var "BASE_URL=http://localhost:3333" \
+  --env-var "TEST_EMAIL=usuario@exemplo.com" \
+  --env-var "TEST_PASSWORD=suasenha" \
+  --env-var "USER_ID=<uuid>" \
+  --env-var "POST_ID=<uuid>" \
+  --env-var "COMMENT_ID=<uuid>" \
+  --reporters cli,htmlextra \
+  --reporter-htmlextra-export postman/reports/report.html
+```
+
+O relatório HTML será gerado em `postman/reports/report.html`.
+
+### Executar no CI (Postman CLI oficial)
+
+O workflow `.github/workflows/social-service.yml` executa os testes automaticamente após cada deploy na branch `main` usando o Postman CLI e publica o relatório JUnit nos artefatos do GitHub Actions.
+
+### Testes de performance (k6)
+
+Os testes de carga ficam em `k6/performance.js` e requerem o [k6](https://k6.io/docs/get-started/installation/) instalado:
+
+```bash
+mkdir -p k6/reports
+
+k6 run \
+  -e BASE_URL=http://localhost:3333 \
+  -e USER_ID=<uuid> \
+  -e POST_ID=<uuid> \
+  -e COMMENT_ID=<uuid> \
+  -e TAG_ID=<uuid> \
+  -e SNIPPET_ID=<uuid> \
+  k6/performance.js
+```
+
+O relatório HTML é gerado automaticamente em `k6/reports/`.
+
 ## Documentação
 
 Com o servidor rodando, acesse:
