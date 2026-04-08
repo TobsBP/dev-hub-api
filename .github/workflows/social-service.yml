@@ -99,7 +99,10 @@ jobs:
         run: |
           postman collection run "47543430-526bd2c3-958c-4469-97ca-93d729e0ee4c" \
             -e "47543430-26389ee9-440e-4b42-9bb2-75779b820d89" \
-             --env-var "dev-hub-api=${{ secrets.API_BASE_URL }}" \
+            --env-var "BASE_URL=${{ secrets.API_BASE_URL }}" \
+            --env-var "TEST_EMAIL=${{ secrets.TEST_EMAIL }}" \
+            --env-var "TEST_PASSWORD=${{ secrets.TEST_PASSWORD }}" \
+            --env-var "USER_ID=${{ secrets.TEST_PASSWORD }}" \
             --reporters junit \
             --reporter-junit-export results.xml
 
