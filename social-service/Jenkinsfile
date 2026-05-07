@@ -1,0 +1,162 @@
+pipeline {
+    agent any
+
+    tools {
+        nodejs 'node-22'
+    }
+
+    options {
+        skipDefaultCheckout()
+    }
+
+    triggers {
+        githubPush()
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Install') {
+            steps {
+                dir('social-service') {
+                    sh 'npm ci'
+                }
+            }
+        }
+
+        stage('Lint') {
+            steps {
+                dir('social-service') {
+                    sh 'npx biome ci .'
+                }
+            }
+        }
+
+        stage('Build & Security') {
+            parallel {
+                stage('Build') {
+                    steps {
+                        dir('social-service') {
+                            sh 'npm run build'
+                        }
+                    }
+                }
+                stage('Security') {
+                    steps {
+                        dir('social-service') {
+                            sh 'npm audit --audit-level=high'
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            when {
+                branch 'main'
+            }
+            steps {
+                withCredentials([string(credentialsId: 'EASYPANEL_WEBHOOK_URL', variable: 'WEBHOOK_URL')]) {
+                    sh 'curl --fail -X GET "$WEBHOOK_URL"'
+                }
+            }
+        }
+
+        stage('Post-Deploy Tests') {
+            when {
+                branch 'main'
+            }
+            parallel {
+                stage('API Tests') {
+                    steps {
+                        withCredentials([
+                            string(credentialsId: 'POSTMAN_API_KEY',   variable: 'POSTMAN_API_KEY'),
+                            string(credentialsId: 'API_BASE_URL',       variable: 'BASE_URL'),
+                            string(credentialsId: 'TEST_EMAIL',         variable: 'TEST_EMAIL'),
+                            string(credentialsId: 'TEST_PASSWORD',      variable: 'TEST_PASSWORD'),
+                            string(credentialsId: 'PERF_USER_ID',       variable: 'USER_ID'),
+                            string(credentialsId: 'PERF_POST_ID',       variable: 'POST_ID'),
+                            string(credentialsId: 'PERF_COMMENT_ID',    variable: 'COMMENT_ID')
+                        ]) {
+                            sh '''
+                                curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+                                postman login --with-api-key "$POSTMAN_API_KEY"
+                                postman collection run "47543430-526bd2c3-958c-4469-97ca-93d729e0ee4c" \
+                                    -e "47543430-26389ee9-440e-4b42-9bb2-75779b820d89" \
+                                    --env-var "BASE_URL=$BASE_URL" \
+                                    --env-var "TEST_EMAIL=$TEST_EMAIL" \
+                                    --env-var "TEST_PASSWORD=$TEST_PASSWORD" \
+                                    --env-var "USER_ID=$USER_ID" \
+                                    --env-var "POST_ID=$POST_ID" \
+                                    --env-var "COMMENT_ID=$COMMENT_ID" \
+                                    --reporters junit \
+                                    --reporter-junit-export social-service/results.xml
+                            '''
+                        }
+                    }
+                    post {
+                        always {
+                            junit testResults: 'social-service/results.xml', allowEmptyResults: true
+                            archiveArtifacts artifacts: 'social-service/results.xml', allowEmptyArchive: true
+                        }
+                    }
+                }
+
+                stage('Performance Tests') {
+                    steps {
+                        withCredentials([
+                            string(credentialsId: 'API_BASE_URL',    variable: 'BASE_URL'),
+                            string(credentialsId: 'PERF_USER_ID',    variable: 'USER_ID'),
+                            string(credentialsId: 'PERF_POST_ID',    variable: 'POST_ID'),
+                            string(credentialsId: 'PERF_COMMENT_ID', variable: 'COMMENT_ID'),
+                            string(credentialsId: 'PERF_TAG_ID',     variable: 'TAG_ID'),
+                            string(credentialsId: 'PERF_SNIPPET_ID', variable: 'SNIPPET_ID')
+                        ]) {
+                            dir('social-service') {
+                                sh '''
+                                    sudo gpg -k
+                                    sudo gpg --no-default-keyring \
+                                        --keyring /usr/share/keyrings/k6-archive-keyring.gpg \
+                                        --keyserver hkp://keyserver.ubuntu.com:80 \
+                                        --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+                                    echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" \
+                                        | sudo tee /etc/apt/sources.list.d/k6.list
+                                    sudo apt-get update && sudo apt-get install -y k6
+
+                                    mkdir -p k6/reports
+                                    k6 run \
+                                        -e BASE_URL="$BASE_URL" \
+                                        -e USER_ID="$USER_ID" \
+                                        -e POST_ID="$POST_ID" \
+                                        -e COMMENT_ID="$COMMENT_ID" \
+                                        -e TAG_ID="$TAG_ID" \
+                                        -e SNIPPET_ID="$SNIPPET_ID" \
+                                        -e CI=true \
+                                        k6/performance.js
+                                '''
+                            }
+                        }
+                    }
+                    post {
+                        always {
+                            archiveArtifacts artifacts: 'social-service/k6/reports/**', allowEmptyArchive: true
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        failure {
+            echo "Pipeline failed on branch ${env.BRANCH_NAME}"
+        }
+        success {
+            echo "Pipeline succeeded on branch ${env.BRANCH_NAME}"
+        }
+    }
+}
