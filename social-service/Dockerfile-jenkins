@@ -1,0 +1,33 @@
+FROM jenkins/jenkins:lts-jdk17
+
+USER root
+
+# System deps needed by pipeline stages (gnupg for k6 keyring, sudo for k6 apt install)
+RUN apt-get update && apt-get install -y \
+    curl \
+    gnupg \
+    sudo \
+    && rm -rf /var/lib/apt/lists/*
+
+# Passwordless sudo for jenkins user — pipeline installs k6 via apt during runs
+RUN echo "jenkins ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+USER jenkins
+
+# Skip the interactive setup wizard
+ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
+
+# Plugins required by the Jenkinsfile
+RUN jenkins-plugin-cli --plugins \
+    git \
+    github \
+    github-branch-source \
+    nodejs \
+    workflow-aggregator \
+    credentials \
+    credentials-binding \
+    junit \
+    pipeline-stage-view \
+    ws-cleanup
+
+EXPOSE 8080 50000
